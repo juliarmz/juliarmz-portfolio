@@ -211,10 +211,10 @@ nav.projects .nav-bottom {
 
 .sketch-grid .plate {
   aspect-ratio: 1 / 1;
+  width: 100%;
+  object-fit: cover;
   background: #ededed;
-  background-image: url('../assets/project-placeholder.svg');
-  background-size: cover;
-  background-position: center;
+  display: block;
 }
 
 /* ---------- responsive ---------- */
