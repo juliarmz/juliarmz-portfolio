@@ -5,6 +5,7 @@
   --ink: #111111;
   --paper: #ffffff;
   --border-size: 26px;
+  --edge-gap: 22px;
   --inset-top: 66px;
   --inset-x: 56px;
   --gap: 28px;
@@ -27,7 +28,7 @@ html, body {
    disappears behind it. */
 .border-frame {
   position: fixed;
-  inset: 0;
+  inset: var(--edge-gap);
   z-index: 5;
   pointer-events: none;
   border: var(--border-size) solid transparent;
@@ -51,7 +52,7 @@ html, body {
 .nav-column {
   flex: none;
   width: 280px;
-  margin: var(--inset-top) 0 40px calc(var(--border-size) + var(--inset-x));
+  margin: calc(var(--inset-top) + var(--edge-gap)) 0 40px calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
   overflow: hidden;
 }
 
@@ -126,11 +127,11 @@ nav.projects .nav-bottom {
   min-width: 0;
   height: 100%;
   overflow-y: auto;
-  padding-right: calc(var(--border-size) + var(--inset-x));
+  padding-right: calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
 }
 
-.content-spacer-top { height: var(--inset-top); }
-.content-spacer-bottom { height: 60px; }
+.content-spacer-top { height: calc(var(--inset-top) + var(--edge-gap)); }
+.content-spacer-bottom { height: calc(60px + var(--edge-gap)); }
 
 /* ---------- home page row (photo + bio) ---------- */
 
@@ -253,12 +254,12 @@ nav.projects .nav-bottom {
 
   .nav-column {
     width: auto;
-    margin: var(--inset-top) calc(var(--border-size) + var(--inset-x)) 24px calc(var(--border-size) + var(--inset-x));
+    margin: calc(var(--inset-top) + var(--edge-gap)) calc(var(--border-size) + var(--inset-x) + var(--edge-gap)) 24px calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
   }
 
   .content-pane {
-    padding-right: calc(var(--border-size) + var(--inset-x));
-    padding-left: calc(var(--border-size) + var(--inset-x));
+    padding-right: calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
+    padding-left: calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
   }
 
   .content-spacer-top { height: 0; }
