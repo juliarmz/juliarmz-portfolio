@@ -5,6 +5,8 @@
   --ink: #111111;
   --paper: #ffffff;
   --border-size: 26px;
+  --inset-top: 66px;
+  --inset-x: 56px;
   --gap: 28px;
 }
 
@@ -13,29 +15,45 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow: hidden;
   background: var(--paper);
   color: var(--ink);
   font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
-body {
-  min-height: 100vh;
-  padding: var(--border-size);
-}
-
-.frame {
-  min-height: calc(100vh - (var(--border-size) * 2));
-  background: var(--paper);
+/* Fixed decorative border — always exactly fills the viewport, never scrolls
+   or resizes. Sits above the content layer so scrolled content visually
+   disappears behind it. */
+.border-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
   border: var(--border-size) solid transparent;
   border-image-source: url('../assets/border.png');
   border-image-slice: 34;
   border-image-width: var(--border-size);
   border-image-repeat: repeat;
-  padding: 40px 56px;
-  position: relative;
 }
 
-/* ---------- layout ---------- */
+/* Fixed app shell: nav column stays put, content-pane scrolls internally. */
+.page-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  gap: 40px;
+}
+
+/* ---------- nav column (never scrolls) ---------- */
+
+.nav-column {
+  flex: none;
+  width: 280px;
+  margin: var(--inset-top) 0 40px calc(var(--border-size) + var(--inset-x));
+  overflow: hidden;
+}
 
 .site-name {
   font-weight: 800;
@@ -46,19 +64,6 @@ body {
   display: inline-block;
   margin-bottom: 56px;
 }
-
-.layout {
-  display: grid;
-  grid-template-columns: 280px 1fr 320px;
-  gap: 40px;
-  align-items: start;
-}
-
-.layout.single {
-  grid-template-columns: 280px 1fr;
-}
-
-/* ---------- nav ---------- */
 
 nav.projects {
   display: flex;
@@ -114,11 +119,31 @@ nav.projects .nav-bottom {
   text-underline-offset: 4px;
 }
 
-/* ---------- photo ---------- */
+/* ---------- content pane (the only thing that scrolls) ---------- */
+
+.content-pane {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: calc(var(--border-size) + var(--inset-x));
+}
+
+.content-spacer-top { height: var(--inset-top); }
+.content-spacer-bottom { height: 60px; }
+
+/* ---------- home page row (photo + bio) ---------- */
+
+.home-row {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
 
 .photo-wrap {
   display: flex;
   justify-content: center;
+  flex: none;
 }
 
 .photo {
@@ -128,12 +153,12 @@ nav.projects .nav-bottom {
   display: block;
 }
 
-/* ---------- bio / contact ---------- */
-
 .bio-col {
   font-size: 12px;
   font-weight: 700;
   line-height: 1.5;
+  flex: 1;
+  min-width: 0;
 }
 
 .bio-col section {
@@ -204,41 +229,40 @@ nav.projects .nav-bottom {
 /* ---------- sketchbook ---------- */
 
 .sketch-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+  columns: 2;
+  column-gap: 24px;
 }
 
-.sketch-row {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  gap: 24px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-}
-
-.sketch-row.offset {
-  align-items: flex-end;
-  margin-left: 60px;
-}
-
-.sketch-row .plate {
-  height: 200px;
-  width: auto;
-  flex: none;
+.sketch-gallery .plate {
+  width: 100%;
+  height: auto;
   display: block;
+  margin-bottom: 24px;
+  break-inside: avoid;
 }
 
 /* ---------- responsive ---------- */
 
 @media (max-width: 900px) {
-  .frame { padding: 32px 24px; }
-  .layout, .layout.single {
-    grid-template-columns: 1fr;
+  :root { --inset-top: 40px; --inset-x: 24px; }
+
+  .page-shell {
+    flex-direction: column;
+    gap: 0;
   }
-  nav.projects .nav-bottom { margin-top: 32px; }
+
+  .nav-column {
+    width: auto;
+    margin: var(--inset-top) calc(var(--border-size) + var(--inset-x)) 24px calc(var(--border-size) + var(--inset-x));
+  }
+
+  .content-pane {
+    padding-right: calc(var(--border-size) + var(--inset-x));
+    padding-left: calc(var(--border-size) + var(--inset-x));
+  }
+
+  .content-spacer-top { height: 0; }
+
+  .home-row { flex-direction: column; }
   .project-gallery { grid-template-columns: 1fr; }
-  .sketch-row.offset { margin-left: 0; }
-  .sketch-row .plate { height: 180px; }
 }
