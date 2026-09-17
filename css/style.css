@@ -144,7 +144,7 @@ nav.projects .nav-bottom {
 .home-row {
   display: flex;
   gap: 40px;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .photo-wrap {
@@ -167,6 +167,8 @@ nav.projects .nav-bottom {
   flex: none;
   width: 460px;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .bio-col section {
@@ -178,6 +180,7 @@ nav.projects .nav-bottom {
   font-weight: 800;
   margin: 0 0 8px;
   text-transform: none;
+  color: var(--red);
 }
 
 .bio-col p {
@@ -189,9 +192,9 @@ nav.projects .nav-bottom {
 }
 
 .mark {
-  width: 90px;
+  width: 150px;
   height: auto;
-  margin: 24px auto 0;
+  margin: auto auto 0;
 }
 
 .mark img {
@@ -272,5 +275,7 @@ nav.projects .nav-bottom {
   .content-spacer-top { height: 0; }
 
   .home-row { flex-direction: column; }
+  .bio-col { width: auto; }
+  .mark { margin-top: 24px; }
   .project-gallery { grid-template-columns: 1fr; }
 }
