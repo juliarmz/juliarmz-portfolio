@@ -225,6 +225,40 @@ nav.projects .nav-bottom {
   line-height: 1.5;
 }
 
+.project-main h2 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--red);
+  margin: 0 0 16px;
+}
+
+.project-brief {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  max-width: 560px;
+}
+
+.project-brief .label {
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+
+.project-brief .answer {
+  color: var(--red);
+  margin: 0;
+}
+
+.project-hero {
+  max-width: 480px;
+  width: 100%;
+  display: block;
+}
+
+.project-section {
+  padding-top: 8px;
+}
+
 .project-gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -239,14 +273,14 @@ nav.projects .nav-bottom {
   background-position: center;
 }
 
-/* ---------- sketchbook ---------- */
+/* ---------- masonry gallery (sketchbook + project pages) ---------- */
 
-.sketch-gallery {
+.masonry-gallery {
   columns: 2;
   column-gap: 24px;
 }
 
-.sketch-gallery .plate {
+.masonry-gallery .plate {
   width: 100%;
   height: auto;
   display: block;
