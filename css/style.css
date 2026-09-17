@@ -97,22 +97,33 @@ nav.projects .nav-bottom {
 }
 
 .nav-item .horse-icon {
-  width: 26px;
-  height: 18px;
+  width: 32px;
+  height: 22px;
   flex: none;
-  background-image: url('../assets/Branding/horse-icon.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  background-color: var(--ink);
+  -webkit-mask-image: url('../assets/Branding/horse-icon.png');
+  mask-image: url('../assets/Branding/horse-icon.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
   opacity: 0;
   transform: translateX(-8px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: var(--red);
 }
 
 .nav-item:hover .horse-icon,
 .nav-item.active .horse-icon {
   opacity: 1;
   transform: translateX(0);
+  background-color: var(--red);
 }
 
 .nav-item.active {
