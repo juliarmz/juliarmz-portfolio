@@ -135,6 +135,12 @@ nav.projects .nav-bottom {
 
 /* ---------- home page row (photo + bio) ---------- */
 
+.home-center {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+}
+
 .home-row {
   display: flex;
   gap: 40px;
@@ -158,8 +164,9 @@ nav.projects .nav-bottom {
   font-size: 12px;
   font-weight: 700;
   line-height: 1.5;
-  flex: 1;
-  min-width: 0;
+  flex: none;
+  width: 460px;
+  max-width: 100%;
 }
 
 .bio-col section {
