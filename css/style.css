@@ -203,17 +203,30 @@ nav.projects .nav-bottom {
 
 /* ---------- sketchbook ---------- */
 
-.sketch-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.sketch-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-.sketch-grid .plate {
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  object-fit: cover;
-  background: #ededed;
+.sketch-row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.sketch-row.offset {
+  align-items: flex-end;
+  margin-left: 60px;
+}
+
+.sketch-row .plate {
+  height: 200px;
+  width: auto;
+  flex: none;
   display: block;
 }
 
@@ -226,5 +239,6 @@ nav.projects .nav-bottom {
   }
   nav.projects .nav-bottom { margin-top: 32px; }
   .project-gallery { grid-template-columns: 1fr; }
-  .sketch-grid { grid-template-columns: repeat(2, 1fr); }
+  .sketch-row.offset { margin-left: 0; }
+  .sketch-row .plate { height: 180px; }
 }
