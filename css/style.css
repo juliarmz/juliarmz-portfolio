@@ -44,14 +44,14 @@ html, body {
   inset: 0;
   z-index: 1;
   display: flex;
-  gap: 40px;
+  gap: 64px;
 }
 
 /* ---------- nav column (never scrolls) ---------- */
 
 .nav-column {
   flex: none;
-  width: 280px;
+  width: auto;
   margin: calc(var(--inset-top) + var(--edge-gap)) 0 40px calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
   overflow: hidden;
 }
@@ -154,7 +154,7 @@ nav.projects .nav-bottom {
 
 .home-row {
   display: flex;
-  gap: 40px;
+  gap: 64px;
   align-items: stretch;
 }
 
@@ -180,6 +180,7 @@ nav.projects .nav-bottom {
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .bio-col section {
@@ -196,21 +197,11 @@ nav.projects .nav-bottom {
 
 .bio-col p {
   margin: 0;
+  text-wrap: balance;
 }
 
 .bio-col a {
   color: var(--ink);
-}
-
-.mark {
-  width: 150px;
-  height: auto;
-  margin: auto auto 0;
-}
-
-.mark img {
-  width: 100%;
-  display: block;
 }
 
 /* ---------- project page content ---------- */
