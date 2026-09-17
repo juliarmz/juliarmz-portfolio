@@ -1,49 +1,67 @@
-const IN_SUBDIR = /\/projects\/[^/]*$/.test(window.location.pathname);
-const BASE = IN_SUBDIR ? "../" : "";
-
-const PROJECTS = [
-  { title: "A Tale of Two Titties", href: `${BASE}projects/a-tale-of-two-titties.html` },
-  { title: "Envy Magazine", href: `${BASE}projects/envy-magazine.html` },
-  { title: "Boyfriend Co-op", href: `${BASE}projects/boyfriend-co-op.html` },
-  { title: "DJs Against Apartheid", href: `${BASE}projects/djs-against-apartheid.html` },
-  { title: "Brinn & CJ Get Married", href: `${BASE}projects/brinn-cj-get-married.html` },
-];
-
-const BOTTOM_LINKS = [
-  { title: "Info & Contact", href: `${BASE}index.html` },
-  { title: "Sketchbook", href: `${BASE}sketchbook.html` },
-];
-
-function pageKey(path) {
-  const clean = path.split("?")[0].split("#")[0];
+function pageKey(pathname) {
+  const clean = pathname.split("?")[0].split("#")[0];
   if (clean === "/" || clean === "" || clean.endsWith("/")) return "index.html";
   return clean.includes("/projects/")
     ? "projects/" + clean.split("/projects/")[1]
     : clean.split("/").pop();
 }
 
-function navItemHTML(item, currentKey) {
-  const isActive = currentKey === pageKey(item.href);
-  return `<a class="nav-item${isActive ? " active" : ""}" href="${item.href}">
-    <span class="horse-icon" aria-hidden="true"></span>
-    <span>${item.title}</span>
-  </a>`;
+function setActiveNav(pathname) {
+  const key = pageKey(pathname);
+  document.querySelectorAll(".nav-column .nav-item").forEach((link) => {
+    const linkKey = pageKey(new URL(link.getAttribute("href"), location.href).pathname);
+    link.classList.toggle("active", linkKey === key);
+  });
 }
 
-function renderNav() {
-  const mount = document.getElementById("nav-mount");
-  if (!mount) return;
-  const currentKey = pageKey(window.location.pathname);
+async function loadPage(url, push) {
+  const contentPane = document.querySelector(".content-pane");
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("fetch failed: " + res.status);
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const newContent = doc.querySelector(".content-pane");
+    if (!newContent) throw new Error("no .content-pane in fetched page");
 
-  const topHTML = PROJECTS.map((p) => navItemHTML(p, currentKey)).join("");
-  const bottomHTML = BOTTOM_LINKS.map((p) => navItemHTML(p, currentKey)).join("");
+    // Resolve relative asset paths against the fetched page's URL, since
+    // they'll be inserted into a document that may sit at a different depth.
+    newContent.querySelectorAll("img[src]").forEach((img) => {
+      img.setAttribute("src", new URL(img.getAttribute("src"), url).href);
+    });
 
-  mount.innerHTML = `
-    <nav class="projects">
-      <div class="nav-top">${topHTML}</div>
-      <div class="nav-bottom">${bottomHTML}</div>
-    </nav>
-  `;
+    contentPane.innerHTML = newContent.innerHTML;
+    contentPane.scrollTop = 0;
+    document.title = doc.title;
+    setActiveNav(new URL(url, location.href).pathname);
+
+    if (push) history.pushState({ url }, "", url);
+  } catch (err) {
+    location.href = url;
+  }
 }
 
-document.addEventListener("DOMContentLoaded", renderNav);
+document.addEventListener("click", (e) => {
+  if (e.defaultPrevented || e.button !== 0) return;
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+  const link = e.target.closest("a");
+  if (!link || !link.closest(".nav-column")) return;
+
+  const href = link.getAttribute("href");
+  if (!href || link.target === "_blank" || link.hasAttribute("download")) return;
+  if (/^(https?:)?\/\//.test(href) || href.startsWith("mailto:") || href.startsWith("#")) return;
+
+  const url = new URL(href, location.href).href;
+  if (url === location.href) {
+    e.preventDefault();
+    return;
+  }
+
+  e.preventDefault();
+  loadPage(url, true);
+});
+
+window.addEventListener("popstate", () => {
+  loadPage(location.href, false);
+});
