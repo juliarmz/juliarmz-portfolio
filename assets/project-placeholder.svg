@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#ededed"/>
+  <path d="M0,300 L140,160 L200,220 L260,120 L400,260 L400,300 Z" fill="#d4d4d4"/>
+  <circle cx="320" cy="70" r="28" fill="#d4d4d4"/>
+  <text x="200" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#9a9a9a">project image</text>
+</svg>

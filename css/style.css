@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap');
+
+:root {
+  --red: #e0201b;
+  --ink: #111111;
+  --paper: #ffffff;
+  --border-size: 26px;
+  --gap: 28px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  padding: var(--border-size);
+}
+
+.frame {
+  min-height: calc(100vh - (var(--border-size) * 2));
+  background: var(--paper);
+  border: var(--border-size) solid transparent;
+  border-image-source: url('../assets/border.png');
+  border-image-slice: 34;
+  border-image-width: var(--border-size);
+  border-image-repeat: repeat;
+  padding: 40px 56px;
+  position: relative;
+}
+
+/* ---------- layout ---------- */
+
+.site-name {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--ink);
+  display: inline-block;
+  margin-bottom: 56px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: 40px;
+  align-items: start;
+}
+
+.layout.single {
+  grid-template-columns: 280px 1fr;
+}
+
+/* ---------- nav ---------- */
+
+nav.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+nav.projects .nav-top {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+nav.projects .nav-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 64px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.nav-item .horse-icon {
+  width: 26px;
+  height: 18px;
+  flex: none;
+  background-image: url('../assets/horse-icon.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.nav-item:hover .horse-icon,
+.nav-item.active .horse-icon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-item.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- photo ---------- */
+
+.photo-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.photo {
+  width: auto;
+  max-width: 100%;
+  height: 380px;
+  display: block;
+}
+
+/* ---------- bio / contact ---------- */
+
+.bio-col {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.bio-col section {
+  margin-bottom: 28px;
+}
+
+.bio-col h2 {
+  font-size: 12px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  text-transform: none;
+}
+
+.bio-col p {
+  margin: 0;
+}
+
+.bio-col a {
+  color: var(--ink);
+}
+
+.mark {
+  width: 90px;
+  height: auto;
+  margin: 24px auto 0;
+}
+
+.mark img {
+  width: 100%;
+  display: block;
+}
+
+/* ---------- project page content ---------- */
+
+.project-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.project-main h1 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.project-main .project-desc {
+  font-size: 12px;
+  font-weight: 700;
+  max-width: 560px;
+  line-height: 1.5;
+}
+
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.project-gallery .plate {
+  aspect-ratio: 4 / 3;
+  background: #ededed;
+  background-image: url('../assets/project-placeholder.svg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------- sketchbook ---------- */
+
+.sketch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.sketch-grid .plate {
+  aspect-ratio: 1 / 1;
+  background: #ededed;
+  background-image: url('../assets/project-placeholder.svg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .frame { padding: 32px 24px; }
+  .layout, .layout.single {
+    grid-template-columns: 1fr;
+  }
+  nav.projects .nav-bottom { margin-top: 32px; }
+  .project-gallery { grid-template-columns: 1fr; }
+  .sketch-grid { grid-template-columns: repeat(2, 1fr); }
+}
