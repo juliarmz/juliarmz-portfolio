@@ -32,7 +32,7 @@ html, body {
   z-index: 5;
   pointer-events: none;
   border: var(--border-size) solid transparent;
-  border-image-source: url('../assets/border.png');
+  border-image-source: url('../assets/Branding/border.png');
   border-image-slice: 34;
   border-image-width: var(--border-size);
   border-image-repeat: repeat;
@@ -100,7 +100,7 @@ nav.projects .nav-bottom {
   width: 26px;
   height: 18px;
   flex: none;
-  background-image: url('../assets/horse-icon.png');
+  background-image: url('../assets/Branding/horse-icon.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
