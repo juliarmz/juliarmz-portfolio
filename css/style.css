@@ -539,3 +539,78 @@ nav.projects .nav-bottom {
   .hero-stage { width: 100%; }
   .hero-thumbs { margin-top: 20px; justify-content: center; }
 }
+
+/* ---------- Figma-style frame mockup ---------- */
+
+.figma-canvas {
+  background: #f5f5f5;
+  padding: 24px 24px 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.figma-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.figma-label,
+.figma-code {
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 8px 12px;
+  color: #111;
+}
+
+.figma-code {
+  color: #777;
+  font-weight: 500;
+}
+
+.figma-frame {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid #0d99ff;
+  padding: 24px 28px;
+}
+
+.figma-frame .collage {
+  width: 100%;
+  margin: 0;
+}
+
+.figma-frame .handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1px solid #0d99ff;
+  z-index: 10;
+}
+
+.handle.tl { top: -5px; left: -5px; }
+.handle.tr { top: -5px; right: -5px; }
+.handle.bl { bottom: -5px; left: -5px; }
+.handle.br { bottom: -5px; right: -5px; }
+
+.figma-size {
+  display: table;
+  margin: 12px auto 0;
+  background: #0d99ff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+  .figma-canvas { padding: 12px 12px 12px; }
+  .figma-frame { padding: 12px; }
+}
