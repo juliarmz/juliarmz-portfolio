@@ -78,6 +78,7 @@ document.addEventListener("click", (e) => {
 });
 
 let lightbox = null;
+let suppressClick = false;
 
 function fitRect(ratio) {
   const pad = 16;
@@ -104,6 +105,45 @@ function setRect(el, r) {
   el.style.height = r.height + "px";
 }
 
+function frameTransform(rect) {
+  const pad = 32;
+  const scale = Math.min(
+    (window.innerWidth - pad * 2) / rect.width,
+    (window.innerHeight - pad * 2) / rect.height
+  );
+  const tx = (window.innerWidth - rect.width * scale) / 2 - rect.left;
+  const ty = (window.innerHeight - rect.height * scale) / 2 - rect.top;
+  return "translate(" + tx + "px, " + ty + "px) scale(" + scale + ")";
+}
+
+function makeFrameClone(frame, rect) {
+  const clone = frame.cloneNode(true);
+  clone.classList.add("zoom-frame");
+  clone.style.left = rect.left + "px";
+  clone.style.top = rect.top + "px";
+  clone.style.width = rect.width + "px";
+  clone.style.height = rect.height + "px";
+  return clone;
+}
+
+function addChrome(box) {
+  const close = document.createElement("button");
+  close.type = "button";
+  close.className = "lightbox-close";
+  close.setAttribute("aria-label", "Close");
+  close.textContent = "×";
+  box.appendChild(close);
+  for (const dir of [-1, 1]) {
+    const arrow = document.createElement("button");
+    arrow.type = "button";
+    arrow.className = "lightbox-arrow " + (dir < 0 ? "prev" : "next");
+    arrow.dataset.dir = dir;
+    arrow.setAttribute("aria-label", dir < 0 ? "Previous" : "Next");
+    arrow.textContent = dir < 0 ? "‹" : "›";
+    box.appendChild(arrow);
+  }
+}
+
 function openLightbox(active) {
   if (lightbox) return;
   const ratio = active.naturalWidth / active.naturalHeight;
@@ -114,65 +154,44 @@ function openLightbox(active) {
   img.alt = active.alt;
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
-  const close = document.createElement("button");
-  close.type = "button";
-  close.className = "lightbox-close";
-  close.setAttribute("aria-label", "Close");
-  close.textContent = "\u00D7";
-  box.appendChild(close);
-  for (const dir of [-1, 1]) {
-    const arrow = document.createElement("button");
-    arrow.type = "button";
-    arrow.className = "lightbox-arrow " + (dir < 0 ? "prev" : "next");
-    arrow.dataset.dir = dir;
-    arrow.setAttribute("aria-label", dir < 0 ? "Previous design" : "Next design");
-    arrow.textContent = dir < 0 ? "\u2039" : "\u203A";
-    box.appendChild(arrow);
-  }
+  addChrome(box);
   document.body.appendChild(box);
   active.style.visibility = "hidden";
-  lightbox = { box, img, active, ratio, closing: false };
+  lightbox = { kind: "image", box, img, active, ratio, closing: false };
   img.getBoundingClientRect();
   box.classList.add("open");
   setRect(img, fitRect(ratio));
 }
 
+function openFrameLightbox(frame) {
+  if (lightbox) return;
+  const rect = frame.getBoundingClientRect();
+  const box = document.createElement("div");
+  box.className = "lightbox";
+  const clone = makeFrameClone(frame, rect);
+  box.appendChild(clone);
+  addChrome(box);
+  document.body.appendChild(box);
+  frame.style.visibility = "hidden";
+  lightbox = { kind: "frame", box, clone, active: frame, rect, closing: false };
+  clone.getBoundingClientRect();
+  box.classList.add("open");
+  clone.style.transform = frameTransform(rect);
+}
+
 function closeLightbox() {
   if (!lightbox || lightbox.closing) return;
-  const { box, img, active } = lightbox;
+  const { box, active } = lightbox;
   lightbox.closing = true;
   box.classList.remove("open");
-  setRect(img, active.getBoundingClientRect());
+  if (lightbox.kind === "image") setRect(lightbox.img, active.getBoundingClientRect());
+  else lightbox.clone.style.transform = "none";
   setTimeout(() => {
     active.style.visibility = "";
     box.remove();
     lightbox = null;
   }, 380);
 }
-
-function stepDesign(step) {
-  const row = document.querySelector(".hero-row");
-  if (!row) return;
-  const imgs = [...row.querySelectorAll(".stage-img")];
-  const current = imgs.findIndex((i) => i.classList.contains("active"));
-  const next = (current + step + imgs.length) % imgs.length;
-  selectDesign(row, next);
-  if (lightbox && !lightbox.closing) showLightboxImage(imgs[next]);
-}
-
-document.addEventListener("click", (e) => {
-  const arrow = e.target.closest(".lightbox-arrow");
-  if (arrow) {
-    stepDesign(Number(arrow.dataset.dir));
-    return;
-  }
-  if (e.target.closest(".lightbox")) {
-    closeLightbox();
-    return;
-  }
-  const active = e.target.closest(".stage-img.active");
-  if (active) openLightbox(active);
-});
 
 function showLightboxImage(next) {
   const { img, active } = lightbox;
@@ -188,6 +207,58 @@ function showLightboxImage(next) {
   img.style.transition = "";
 }
 
+function showLightboxFrame(next) {
+  const { clone: old, active } = lightbox;
+  active.style.visibility = "";
+  const rect = next.getBoundingClientRect();
+  const clone = makeFrameClone(next, rect);
+  next.style.visibility = "hidden";
+  clone.style.transition = "none";
+  clone.style.transform = frameTransform(rect);
+  old.replaceWith(clone);
+  clone.getBoundingClientRect();
+  clone.style.transition = "";
+  lightbox.clone = clone;
+  lightbox.active = next;
+  lightbox.rect = rect;
+}
+
+function stepDesign(step) {
+  if (lightbox && !lightbox.closing && lightbox.kind === "frame") {
+    const frames = [...document.querySelectorAll(".figma-frame")];
+    const current = frames.indexOf(lightbox.active);
+    showLightboxFrame(frames[(current + step + frames.length) % frames.length]);
+    return;
+  }
+  const row = document.querySelector(".hero-row");
+  if (!row) return;
+  const imgs = [...row.querySelectorAll(".stage-img")];
+  const current = imgs.findIndex((i) => i.classList.contains("active"));
+  const next = (current + step + imgs.length) % imgs.length;
+  selectDesign(row, next);
+  if (lightbox && !lightbox.closing) showLightboxImage(imgs[next]);
+}
+
+document.addEventListener("click", (e) => {
+  if (suppressClick) return;
+  const arrow = e.target.closest(".lightbox-arrow");
+  if (arrow) {
+    stepDesign(Number(arrow.dataset.dir));
+    return;
+  }
+  if (e.target.closest(".lightbox")) {
+    closeLightbox();
+    return;
+  }
+  const active = e.target.closest(".stage-img.active");
+  if (active) {
+    openLightbox(active);
+    return;
+  }
+  const frame = e.target.closest(".figma-frame");
+  if (frame) openFrameLightbox(frame);
+});
+
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeLightbox();
@@ -195,17 +266,21 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
   if (e.target.closest && e.target.closest("input, textarea, select")) return;
-  const row = document.querySelector(".hero-row");
-  if (!row) return;
   const open = lightbox && !lightbox.closing;
-  const stageRect = row.querySelector(".hero-stage").getBoundingClientRect();
-  if (!open && (stageRect.bottom < 0 || stageRect.top > window.innerHeight)) return;
+  if (!open) {
+    const row = document.querySelector(".hero-row");
+    if (!row) return;
+    const stageRect = row.querySelector(".hero-stage").getBoundingClientRect();
+    if (stageRect.bottom < 0 || stageRect.top > window.innerHeight) return;
+  }
   e.preventDefault();
   stepDesign(e.key === "ArrowRight" ? 1 : -1);
 });
 
 window.addEventListener("resize", () => {
-  if (lightbox && !lightbox.closing) setRect(lightbox.img, fitRect(lightbox.ratio));
+  if (!lightbox || lightbox.closing) return;
+  if (lightbox.kind === "image") setRect(lightbox.img, fitRect(lightbox.ratio));
+  else lightbox.clone.style.transform = frameTransform(lightbox.rect);
 });
 
 let drag = null;
@@ -213,6 +288,7 @@ let deskZ = 10;
 
 document.addEventListener("pointerdown", (e) => {
   if (e.pointerType === "touch" || e.button !== 0) return;
+  if (e.target.closest(".lightbox")) return;
   const canvas = e.target.closest(".figma-canvas");
   if (!canvas) return;
   const pane = canvas.closest(".content-pane");
@@ -228,6 +304,7 @@ document.addEventListener("pointerdown", (e) => {
     startY: e.clientY,
     baseX,
     baseY,
+    moved: false,
     minX: baseX - (rect.left - paneRect.left),
     maxX: baseX + (paneRect.right - 48 - rect.right),
     minY: baseY - (rect.top - hostRect.top),
@@ -240,6 +317,7 @@ document.addEventListener("pointerdown", (e) => {
 
 document.addEventListener("pointermove", (e) => {
   if (!drag) return;
+  if (Math.abs(e.clientX - drag.startX) > 4 || Math.abs(e.clientY - drag.startY) > 4) drag.moved = true;
   const dx = Math.min(drag.maxX, Math.max(drag.minX, drag.baseX + e.clientX - drag.startX));
   const dy = Math.min(drag.maxY, Math.max(drag.minY, drag.baseY + e.clientY - drag.startY));
   drag.canvas.dataset.dx = dx;
@@ -250,6 +328,12 @@ document.addEventListener("pointermove", (e) => {
 function endDrag() {
   if (!drag) return;
   drag.canvas.classList.remove("dragging");
+  if (drag.moved) {
+    suppressClick = true;
+    setTimeout(() => {
+      suppressClick = false;
+    }, 60);
+  }
   drag = null;
 }
 

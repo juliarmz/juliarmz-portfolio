@@ -606,14 +606,14 @@ nav.projects .nav-bottom {
 
 .desk {
   position: relative;
-  width: min(100%, calc((100vh - 120px) * 1.245));
-  aspect-ratio: 971 / 780;
+  width: min(100%, calc((100vh - 100px) * 1.21));
+  aspect-ratio: 971 / 800;
   margin-inline: auto;
 }
 
 .desk .desk-item {
   position: absolute;
-  width: 52%;
+  width: 55%;
   margin: 0;
   padding: 0;
 }
@@ -628,4 +628,19 @@ nav.projects .nav-bottom {
 @media (max-width: 900px) {
   .desk { width: 100%; aspect-ratio: auto; display: flex; flex-direction: column; gap: 32px; }
   .desk .desk-item { position: relative; width: 100%; }
+}
+
+.zoom-frame {
+  position: fixed;
+  margin: 0;
+  padding: 12px;
+  transform-origin: 0 0;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  cursor: zoom-out;
+}
+
+.zoom-frame .collage .cap { font-size: max(10px, 1.7cqw); }
+
+@media (prefers-reduced-motion: reduce) {
+  .zoom-frame { transition: none; }
 }
