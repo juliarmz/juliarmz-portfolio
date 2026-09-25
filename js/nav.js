@@ -74,3 +74,27 @@ document.addEventListener("click", (e) => {
   row.querySelectorAll(".hero-thumb").forEach((t) => t.classList.toggle("active", t === thumb));
   row.querySelectorAll(".stage-img").forEach((img, i) => img.classList.toggle("active", i === index));
 });
+
+document.addEventListener("click", (e) => {
+  const open = e.target.closest(".lightbox");
+  if (open) {
+    open.remove();
+    return;
+  }
+  const stage = e.target.closest(".hero-stage");
+  const active = stage && stage.querySelector(".stage-img.active");
+  if (!active) return;
+  const box = document.createElement("div");
+  box.className = "lightbox";
+  const img = document.createElement("img");
+  img.src = active.currentSrc || active.src;
+  img.alt = active.alt;
+  box.appendChild(img);
+  document.body.appendChild(box);
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  const open = document.querySelector(".lightbox");
+  if (open) open.remove();
+});
