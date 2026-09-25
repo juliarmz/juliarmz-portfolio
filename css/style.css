@@ -287,76 +287,6 @@ nav.projects .nav-bottom {
   margin-top: 8vh;
 }
 
-/* ---------- process journey (case-study sections) ---------- */
-
-.mood-board {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 28px 24px;
-}
-
-.mood-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: none;
-}
-
-.mood-item img {
-  display: block;
-  height: auto;
-  width: 100%;
-}
-
-.mood-item .caption {
-  text-align: left;
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--red);
-  line-height: 1.3;
-}
-
-.mood-item.size-lg { width: 280px; }
-.mood-item.size-md { width: 210px; }
-.mood-item.size-sm { width: 160px; }
-
-.sketch-board {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-}
-
-.sketch-board .lockup {
-  flex: none;
-  width: 240px;
-}
-
-.sketch-board .lockup img {
-  width: 100%;
-  display: block;
-}
-
-.sketch-refs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
-  flex: 1;
-  min-width: 260px;
-}
-
-@media (max-width: 900px) {
-  .mood-item.size-lg,
-  .mood-item.size-md,
-  .mood-item.size-sm {
-    width: calc(50% - 12px);
-  }
-  }
-
 .project-gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -420,7 +350,7 @@ nav.projects .nav-bottom {
   position: relative;
   width: 88%;
   margin-inline: auto;
-  aspect-ratio: 1760 / 1190;
+  aspect-ratio: var(--cw, 1760) / var(--ch, 1190);
   container-type: inline-size;
   text-align: left;
 }
@@ -430,21 +360,21 @@ nav.projects .nav-bottom {
 .collage .cap-heading,
 .collage .swatch {
   position: absolute;
-  left: calc((var(--x) - 80) / 1760 * 100%);
-  top: calc((var(--y) - 100) / 1190 * 100%);
+  left: calc((var(--x) - var(--x0, 80)) / var(--cw, 1760) * 100%);
+  top: calc((var(--y) - var(--y0, 100)) / var(--ch, 1190) * 100%);
   margin: 0;
 }
 
 .collage .float {
-  width: calc(var(--w) / 1760 * 100%);
+  width: calc(var(--w) / var(--cw, 1760) * 100%);
   height: auto;
   z-index: var(--z, 1);
   display: block;
 }
 
 .collage .swatch {
-  width: calc(132 / 1760 * 100%);
-  height: calc(57 / 1190 * 100%);
+  width: calc(132 / var(--cw, 1760) * 100%);
+  height: calc(57 / var(--ch, 1190) * 100%);
   background: var(--c);
   box-sizing: border-box;
 }
@@ -535,7 +465,7 @@ nav.projects .nav-bottom {
 .figma-canvas {
   background: transparent;
   padding: 24px 24px 20px;
-  width: min(92%, calc((100vh - 342px) * 1.479 + 107px));
+  width: min(92%, calc((100vh - 342px) * var(--ratio, 1.479) + 107px));
   margin-inline: auto;
   text-align: left;
 }
@@ -655,8 +585,6 @@ nav.projects .nav-bottom {
 .lightbox-close:hover { opacity: 1; }
 
 .project-main + .content-spacer-bottom { height: 26vh; }
-
-.project-section.panel-short { margin-top: 20vh; }
 
 /* ---------- draggable moodboard ---------- */
 
