@@ -209,11 +209,16 @@ nav.projects .nav-bottom {
 .project-main {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 24px;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: center;
 }
 
 @media (min-width: 901px) {
-  .content-spacer-top + .project-main { margin-top: 80px; }
+  .content-spacer-top + .project-main { margin-top: 80px; translate: -4px 0; }
 }
 
 .project-main h1 {
@@ -254,12 +259,14 @@ nav.projects .nav-bottom {
 }
 
 .project-hero {
+  margin-inline: auto;
   max-width: 480px;
   width: 100%;
   display: block;
 }
 
 .project-section {
+  width: 100%;
   padding-top: 24px;
   border-top: 1px solid #e8e8e8;
 }
@@ -269,6 +276,7 @@ nav.projects .nav-bottom {
 .mood-board {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: flex-start;
   gap: 28px 24px;
 }
@@ -287,6 +295,7 @@ nav.projects .nav-bottom {
 }
 
 .mood-item .caption {
+  text-align: left;
   font-size: 11px;
   font-weight: 800;
   color: var(--red);
@@ -300,6 +309,7 @@ nav.projects .nav-bottom {
 .sketch-board {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 32px;
 }
@@ -317,6 +327,7 @@ nav.projects .nav-bottom {
 .sketch-refs {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
   flex: 1;
   min-width: 260px;
@@ -325,6 +336,7 @@ nav.projects .nav-bottom {
 .final-showcase {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 32px;
   align-items: flex-start;
 }
@@ -344,8 +356,9 @@ nav.projects .nav-bottom {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  flex: 1;
-  min-width: 220px;
+  flex: none;
+  width: 320px;
+  max-width: 100%;
 }
 
 .final-showcase .final-variants img {
