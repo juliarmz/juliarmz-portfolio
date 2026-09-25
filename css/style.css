@@ -237,6 +237,8 @@ nav.projects .nav-bottom {
 .project-main .project-desc a {
   color: var(--red);
   text-decoration: none;
+  display: block;
+  margin-top: 6px;
 }
 
 .project-main h2 {
