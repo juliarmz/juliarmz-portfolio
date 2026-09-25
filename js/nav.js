@@ -207,3 +207,53 @@ document.addEventListener("keydown", (e) => {
 window.addEventListener("resize", () => {
   if (lightbox && !lightbox.closing) setRect(lightbox.img, fitRect(lightbox.ratio));
 });
+
+let drag = null;
+
+document.addEventListener("pointerdown", (e) => {
+  if (e.pointerType === "touch" || e.button !== 0) return;
+  const canvas = e.target.closest(".figma-canvas");
+  if (!canvas) return;
+  const pane = canvas.closest(".content-pane");
+  const host = canvas.closest(".project-main");
+  const rect = canvas.getBoundingClientRect();
+  const paneRect = pane.getBoundingClientRect();
+  const hostRect = host.getBoundingClientRect();
+  const baseX = Number(canvas.dataset.dx || 0);
+  const baseY = Number(canvas.dataset.dy || 0);
+  drag = {
+    canvas,
+    startX: e.clientX,
+    startY: e.clientY,
+    baseX,
+    baseY,
+    minX: baseX - (rect.left - paneRect.left),
+    maxX: baseX + (paneRect.right - 48 - rect.right),
+    minY: baseY - (rect.top - hostRect.top),
+    maxY: baseY + (hostRect.bottom - rect.bottom),
+  };
+  canvas.classList.add("dragging");
+  e.preventDefault();
+});
+
+document.addEventListener("pointermove", (e) => {
+  if (!drag) return;
+  const dx = Math.min(drag.maxX, Math.max(drag.minX, drag.baseX + e.clientX - drag.startX));
+  const dy = Math.min(drag.maxY, Math.max(drag.minY, drag.baseY + e.clientY - drag.startY));
+  drag.canvas.dataset.dx = dx;
+  drag.canvas.dataset.dy = dy;
+  drag.canvas.style.transform = "translate(" + dx + "px, " + dy + "px)";
+});
+
+function endDrag() {
+  if (!drag) return;
+  drag.canvas.classList.remove("dragging");
+  drag = null;
+}
+
+document.addEventListener("pointerup", endDrag);
+document.addEventListener("pointercancel", endDrag);
+
+document.addEventListener("dragstart", (e) => {
+  if (e.target.closest && e.target.closest(".figma-canvas")) e.preventDefault();
+});

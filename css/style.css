@@ -284,7 +284,7 @@ nav.projects .nav-bottom {
 
 .project-section {
   width: 100%;
-  margin-top: 20vh;
+  margin-top: 8vh;
 }
 
 /* ---------- process journey (case-study sections) ---------- */
@@ -655,3 +655,21 @@ nav.projects .nav-bottom {
 .lightbox-close:hover { opacity: 1; }
 
 .project-main + .content-spacer-bottom { height: 26vh; }
+
+.project-section.panel-short { margin-top: 20vh; }
+
+/* ---------- draggable moodboard ---------- */
+
+.figma-canvas {
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.figma-canvas.dragging {
+  cursor: grabbing;
+  z-index: 30;
+}
+
+.figma-canvas img { -webkit-user-drag: none; }
