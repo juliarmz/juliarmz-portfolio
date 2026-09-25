@@ -114,6 +114,15 @@ function openLightbox(active) {
   img.alt = active.alt;
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
+  for (const dir of [-1, 1]) {
+    const arrow = document.createElement("button");
+    arrow.type = "button";
+    arrow.className = "lightbox-arrow " + (dir < 0 ? "prev" : "next");
+    arrow.dataset.dir = dir;
+    arrow.setAttribute("aria-label", dir < 0 ? "Previous design" : "Next design");
+    arrow.textContent = dir < 0 ? "\u2039" : "\u203A";
+    box.appendChild(arrow);
+  }
   document.body.appendChild(box);
   active.style.visibility = "hidden";
   lightbox = { box, img, active, ratio, closing: false };
@@ -135,7 +144,22 @@ function closeLightbox() {
   }, 380);
 }
 
+function stepDesign(step) {
+  const row = document.querySelector(".hero-row");
+  if (!row) return;
+  const imgs = [...row.querySelectorAll(".stage-img")];
+  const current = imgs.findIndex((i) => i.classList.contains("active"));
+  const next = (current + step + imgs.length) % imgs.length;
+  selectDesign(row, next);
+  if (lightbox && !lightbox.closing) showLightboxImage(imgs[next]);
+}
+
 document.addEventListener("click", (e) => {
+  const arrow = e.target.closest(".lightbox-arrow");
+  if (arrow) {
+    stepDesign(Number(arrow.dataset.dir));
+    return;
+  }
   if (e.target.closest(".lightbox")) {
     closeLightbox();
     return;
@@ -170,13 +194,8 @@ document.addEventListener("keydown", (e) => {
   const open = lightbox && !lightbox.closing;
   const stageRect = row.querySelector(".hero-stage").getBoundingClientRect();
   if (!open && (stageRect.bottom < 0 || stageRect.top > window.innerHeight)) return;
-  const imgs = [...row.querySelectorAll(".stage-img")];
-  const current = imgs.findIndex((i) => i.classList.contains("active"));
-  const step = e.key === "ArrowRight" ? 1 : -1;
-  const next = (current + step + imgs.length) % imgs.length;
   e.preventDefault();
-  selectDesign(row, next);
-  if (open) showLightboxImage(imgs[next]);
+  stepDesign(e.key === "ArrowRight" ? 1 : -1);
 });
 
 window.addEventListener("resize", () => {
