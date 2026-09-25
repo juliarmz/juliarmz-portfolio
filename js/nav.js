@@ -114,6 +114,12 @@ function openLightbox(active) {
   img.alt = active.alt;
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
+  const close = document.createElement("button");
+  close.type = "button";
+  close.className = "lightbox-close";
+  close.setAttribute("aria-label", "Close");
+  close.textContent = "\u00D7";
+  box.appendChild(close);
   for (const dir of [-1, 1]) {
     const arrow = document.createElement("button");
     arrow.type = "button";
