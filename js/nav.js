@@ -65,3 +65,25 @@ document.addEventListener("click", (e) => {
 window.addEventListener("popstate", () => {
   loadPage(location.href, false);
 });
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".carousel-btn");
+  if (!btn) return;
+  const track = btn.closest(".carousel").querySelector(".carousel-track");
+  const count = track.children.length;
+  const current = Math.round(track.scrollLeft / track.clientWidth);
+  const next = (current + Number(btn.dataset.dir) + count) % count;
+  track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
+});
+
+document.addEventListener(
+  "scroll",
+  (e) => {
+    const track = e.target;
+    if (!track.classList || !track.classList.contains("carousel-track")) return;
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    track.closest(".carousel").querySelector(".carousel-count").textContent =
+      index + 1 + " / " + track.children.length;
+  },
+  true
+);

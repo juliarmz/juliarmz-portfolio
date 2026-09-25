@@ -283,16 +283,68 @@ nav.projects .nav-bottom {
   flex: none;
   margin: 0;
   max-width: none;
-  width: min(calc((100vh - 128px) * 0.8), calc(100% - 232px));
+  width: min(calc((100vh - 128px) * 0.8), calc(100% - 292px));
   height: auto;
 }
 
-.hero-row .project-desc {
+.hero-side {
   flex: none;
+  align-self: stretch;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.hero-row .project-desc {
   width: 200px;
   margin: 116px 0 0;
-  text-align: left;
   line-height: 1.3;
+}
+
+.carousel {
+  margin-top: auto;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carousel-track img {
+  flex: 0 0 100%;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  object-position: bottom left;
+  scroll-snap-align: start;
+  display: block;
+}
+
+.carousel-ui {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--red);
+}
+
+.carousel-btn {
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--red);
+  background: none;
+  border: 0;
+  padding: 0 4px;
+  cursor: pointer;
 }
 
 @media (min-width: 901px) {
@@ -302,7 +354,9 @@ nav.projects .nav-bottom {
 @media (max-width: 900px) {
   .hero-row { flex-direction: column; align-items: center; }
   .hero-row .project-hero { width: 100%; }
-  .hero-row .project-desc { width: auto; margin: 0; text-align: center; }
+  .hero-side { width: 100%; align-self: auto; }
+  .hero-row .project-desc { width: auto; margin: 16px 0 0; text-align: center; }
+  .carousel { margin-top: 20px; max-width: 320px; margin-inline: auto; }
 }
 
 .project-section {
@@ -372,56 +426,13 @@ nav.projects .nav-bottom {
   min-width: 260px;
 }
 
-.final-showcase {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 32px;
-  align-items: flex-start;
-}
-
-.final-showcase .final-main {
-  flex: none;
-  width: 380px;
-  max-width: 100%;
-}
-
-.final-showcase .final-main img {
-  width: 100%;
-  display: block;
-}
-
-.final-showcase .final-variants {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  flex: none;
-  width: 320px;
-  max-width: 100%;
-}
-
-.final-showcase .final-variants img {
-  width: 100%;
-  display: block;
-}
-
-.variant-label {
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--red);
-  margin: 0 0 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 @media (max-width: 900px) {
   .mood-item.size-lg,
   .mood-item.size-md,
   .mood-item.size-sm {
     width: calc(50% - 12px);
   }
-  .final-showcase .final-main { width: 100%; }
-}
+  }
 
 .project-gallery {
   display: grid;
