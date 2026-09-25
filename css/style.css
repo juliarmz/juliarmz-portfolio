@@ -284,7 +284,7 @@ nav.projects .nav-bottom {
 
 .project-section {
   width: 100%;
-  margin-top: 24vh;
+  margin-top: 20vh;
 }
 
 /* ---------- process journey (case-study sections) ---------- */
@@ -653,3 +653,5 @@ nav.projects .nav-bottom {
 }
 
 .lightbox-close:hover { opacity: 1; }
+
+.project-main + .content-spacer-bottom { height: 26vh; }
