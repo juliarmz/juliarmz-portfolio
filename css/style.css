@@ -533,7 +533,7 @@ nav.projects .nav-bottom {
 /* ---------- Figma-style frame mockup ---------- */
 
 .figma-canvas {
-  background: #f5f5f5;
+  background: transparent;
   padding: 24px 24px 20px;
   width: 100%;
   text-align: left;
@@ -546,8 +546,7 @@ nav.projects .nav-bottom {
   margin-bottom: 14px;
 }
 
-.figma-label,
-.figma-code {
+.figma-label {
   background: #fff;
   border: 1px solid #e2e2e2;
   border-radius: 6px;
@@ -558,15 +557,10 @@ nav.projects .nav-bottom {
   color: #111;
 }
 
-.figma-code {
-  color: #777;
-  font-weight: 500;
-}
-
 .figma-frame {
   position: relative;
   background: #fff;
-  border: 1.5px solid #0d99ff;
+  border: 1.5px solid var(--red);
   padding: 24px 28px;
 }
 
@@ -580,7 +574,7 @@ nav.projects .nav-bottom {
   width: 8px;
   height: 8px;
   background: #fff;
-  border: 1px solid #0d99ff;
+  border: 1px solid var(--red);
   z-index: 10;
 }
 
@@ -592,7 +586,7 @@ nav.projects .nav-bottom {
 .figma-size {
   display: table;
   margin: 12px auto 0;
-  background: #0d99ff;
+  background: var(--red);
   color: #fff;
   font-size: 12px;
   font-weight: 600;
