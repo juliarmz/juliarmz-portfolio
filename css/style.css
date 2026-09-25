@@ -307,8 +307,7 @@ nav.projects .nav-bottom {
 
 .project-section {
   width: 100%;
-  padding-top: 24px;
-  border-top: 1px solid #e8e8e8;
+  margin-top: 50vh;
 }
 
 /* ---------- process journey (case-study sections) ---------- */
