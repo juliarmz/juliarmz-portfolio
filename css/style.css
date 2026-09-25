@@ -212,6 +212,10 @@ nav.projects .nav-bottom {
   gap: 24px;
 }
 
+@media (min-width: 901px) {
+  .content-spacer-top + .project-main { margin-top: 80px; }
+}
+
 .project-main h1 {
   font-size: 20px;
   font-weight: 800;
