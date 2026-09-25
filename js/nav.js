@@ -209,6 +209,7 @@ window.addEventListener("resize", () => {
 });
 
 let drag = null;
+let deskZ = 10;
 
 document.addEventListener("pointerdown", (e) => {
   if (e.pointerType === "touch" || e.button !== 0) return;
@@ -233,6 +234,7 @@ document.addEventListener("pointerdown", (e) => {
     maxY: baseY + (hostRect.bottom - rect.bottom),
   };
   canvas.classList.add("dragging");
+  canvas.style.zIndex = ++deskZ;
   e.preventDefault();
 });
 

@@ -601,3 +601,31 @@ nav.projects .nav-bottom {
 }
 
 .figma-canvas img { -webkit-user-drag: none; }
+
+/* ---------- shared desk: overlapping draggable frames ---------- */
+
+.desk {
+  position: relative;
+  width: min(100%, calc((100vh - 120px) * 1.245));
+  aspect-ratio: 971 / 780;
+  margin-inline: auto;
+}
+
+.desk .desk-item {
+  position: absolute;
+  width: 52%;
+  margin: 0;
+  padding: 0;
+}
+
+.desk .figma-head { margin-bottom: 8px; }
+.desk .figma-frame { padding: 12px; }
+.desk .collage .cap { font-size: max(10px, 1.7cqw); }
+
+.desk-mood { left: 0; top: 0; z-index: 1; }
+.desk-sketch { right: 0; bottom: 0; z-index: 2; }
+
+@media (max-width: 900px) {
+  .desk { width: 100%; aspect-ratio: auto; display: flex; flex-direction: column; gap: 32px; }
+  .desk .desk-item { position: relative; width: 100%; }
+}
