@@ -75,26 +75,77 @@ document.addEventListener("click", (e) => {
   row.querySelectorAll(".stage-img").forEach((img, i) => img.classList.toggle("active", i === index));
 });
 
-document.addEventListener("click", (e) => {
-  const open = e.target.closest(".lightbox");
-  if (open) {
-    open.remove();
-    return;
+let lightbox = null;
+
+function fitRect(ratio) {
+  const pad = 16;
+  const maxW = window.innerWidth - pad * 2;
+  const maxH = window.innerHeight - pad * 2;
+  let width = maxW;
+  let height = maxW / ratio;
+  if (height > maxH) {
+    height = maxH;
+    width = maxH * ratio;
   }
-  const stage = e.target.closest(".hero-stage");
-  const active = stage && stage.querySelector(".stage-img.active");
-  if (!active) return;
+  return {
+    left: (window.innerWidth - width) / 2,
+    top: (window.innerHeight - height) / 2,
+    width,
+    height,
+  };
+}
+
+function setRect(el, r) {
+  el.style.left = r.left + "px";
+  el.style.top = r.top + "px";
+  el.style.width = r.width + "px";
+  el.style.height = r.height + "px";
+}
+
+function openLightbox(active) {
+  if (lightbox) return;
+  const ratio = active.naturalWidth / active.naturalHeight;
   const box = document.createElement("div");
   box.className = "lightbox";
   const img = document.createElement("img");
   img.src = active.currentSrc || active.src;
   img.alt = active.alt;
+  setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
   document.body.appendChild(box);
+  active.style.visibility = "hidden";
+  lightbox = { box, img, active, ratio, closing: false };
+  img.getBoundingClientRect();
+  box.classList.add("open");
+  setRect(img, fitRect(ratio));
+}
+
+function closeLightbox() {
+  if (!lightbox || lightbox.closing) return;
+  const { box, img, active } = lightbox;
+  lightbox.closing = true;
+  box.classList.remove("open");
+  setRect(img, active.getBoundingClientRect());
+  setTimeout(() => {
+    active.style.visibility = "";
+    box.remove();
+    lightbox = null;
+  }, 380);
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".lightbox")) {
+    closeLightbox();
+    return;
+  }
+  const active = e.target.closest(".stage-img.active");
+  if (active) openLightbox(active);
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key !== "Escape") return;
-  const open = document.querySelector(".lightbox");
-  if (open) open.remove();
+  if (e.key === "Escape") closeLightbox();
+});
+
+window.addEventListener("resize", () => {
+  if (lightbox && !lightbox.closing) setRect(lightbox.img, fitRect(lightbox.ratio));
 });
