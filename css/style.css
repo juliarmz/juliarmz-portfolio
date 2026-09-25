@@ -485,7 +485,8 @@ nav.projects .nav-bottom {
 
 .collage {
   position: relative;
-  width: 100%;
+  width: 88%;
+  margin-inline: auto;
   aspect-ratio: 1760 / 1190;
   container-type: inline-size;
   text-align: left;
@@ -526,7 +527,7 @@ nav.projects .nav-bottom {
 
 .collage .cap {
   color: var(--red);
-  font-size: max(9px, 1.53cqw);
+  font-size: 14px;
 }
 
 .collage .cap.r {
