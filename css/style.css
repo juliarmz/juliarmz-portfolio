@@ -212,7 +212,7 @@ nav.projects .nav-bottom {
   align-items: center;
   gap: 24px;
   width: 100%;
-  max-width: 760px;
+  max-width: 880px;
   margin-inline: auto;
   text-align: center;
 }
@@ -263,6 +263,39 @@ nav.projects .nav-bottom {
   max-width: 480px;
   width: 100%;
   display: block;
+}
+
+.hero-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.hero-row .project-hero {
+  flex: none;
+  margin: 0;
+  max-width: none;
+  width: min(calc((100vh - 128px) * 0.8), calc(100% - 232px));
+  height: auto;
+}
+
+.hero-row .project-desc {
+  flex: none;
+  width: 200px;
+  margin: 116px 0 0;
+  text-align: left;
+}
+
+@media (min-width: 901px) {
+  .hero-row { margin-top: -104px; }
+}
+
+@media (max-width: 900px) {
+  .hero-row { flex-direction: column; align-items: center; }
+  .hero-row .project-hero { width: 100%; }
+  .hero-row .project-desc { width: auto; margin: 0; text-align: center; }
 }
 
 .project-section {
