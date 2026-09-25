@@ -118,7 +118,9 @@ function frameTransform(rect) {
 
 function makeFrameClone(frame, rect) {
   const clone = frame.cloneNode(true);
-  clone.classList.add("zoom-frame");
+  clone.classList.add("zoom-canvas");
+  clone.style.transform = "none";
+  clone.style.zIndex = "";
   clone.style.left = rect.left + "px";
   clone.style.top = rect.top + "px";
   clone.style.width = rect.width + "px";
@@ -225,7 +227,7 @@ function showLightboxFrame(next) {
 
 function stepDesign(step) {
   if (lightbox && !lightbox.closing && lightbox.kind === "frame") {
-    const frames = [...document.querySelectorAll(".figma-frame")];
+    const frames = [...document.querySelectorAll(".figma-canvas")];
     const current = frames.indexOf(lightbox.active);
     showLightboxFrame(frames[(current + step + frames.length) % frames.length]);
     return;
@@ -256,7 +258,7 @@ document.addEventListener("click", (e) => {
     return;
   }
   const frame = e.target.closest(".figma-frame");
-  if (frame) openFrameLightbox(frame);
+  if (frame) openFrameLightbox(frame.closest(".figma-canvas"));
 });
 
 document.addEventListener("keydown", (e) => {
