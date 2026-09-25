@@ -66,13 +66,15 @@ window.addEventListener("popstate", () => {
   loadPage(location.href, false);
 });
 
+function selectDesign(row, index) {
+  row.querySelectorAll(".hero-thumb").forEach((t, i) => t.classList.toggle("active", i === index));
+  row.querySelectorAll(".stage-img").forEach((img, i) => img.classList.toggle("active", i === index));
+}
+
 document.addEventListener("click", (e) => {
   const thumb = e.target.closest(".hero-thumb");
   if (!thumb) return;
-  const row = thumb.closest(".hero-row");
-  const index = Number(thumb.dataset.index);
-  row.querySelectorAll(".hero-thumb").forEach((t) => t.classList.toggle("active", t === thumb));
-  row.querySelectorAll(".stage-img").forEach((img, i) => img.classList.toggle("active", i === index));
+  selectDesign(thumb.closest(".hero-row"), Number(thumb.dataset.index));
 });
 
 let lightbox = null;
@@ -142,8 +144,39 @@ document.addEventListener("click", (e) => {
   if (active) openLightbox(active);
 });
 
+function showLightboxImage(next) {
+  const { img, active } = lightbox;
+  active.style.visibility = "";
+  next.style.visibility = "hidden";
+  lightbox.active = next;
+  lightbox.ratio = next.naturalWidth / next.naturalHeight;
+  img.style.transition = "none";
+  img.src = next.currentSrc || next.src;
+  img.alt = next.alt;
+  setRect(img, fitRect(lightbox.ratio));
+  img.getBoundingClientRect();
+  img.style.transition = "";
+}
+
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeLightbox();
+  if (e.key === "Escape") {
+    closeLightbox();
+    return;
+  }
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  if (e.target.closest && e.target.closest("input, textarea, select")) return;
+  const row = document.querySelector(".hero-row");
+  if (!row) return;
+  const open = lightbox && !lightbox.closing;
+  const stageRect = row.querySelector(".hero-stage").getBoundingClientRect();
+  if (!open && (stageRect.bottom < 0 || stageRect.top > window.innerHeight)) return;
+  const imgs = [...row.querySelectorAll(".stage-img")];
+  const current = imgs.findIndex((i) => i.classList.contains("active"));
+  const step = e.key === "ArrowRight" ? 1 : -1;
+  const next = (current + step + imgs.length) % imgs.length;
+  e.preventDefault();
+  selectDesign(row, next);
+  if (open) showLightboxImage(imgs[next]);
 });
 
 window.addEventListener("resize", () => {
