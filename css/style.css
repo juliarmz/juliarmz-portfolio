@@ -266,35 +266,20 @@ nav.projects .nav-bottom {
 
 .hero-row {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 32px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   width: 100%;
 }
 
-.hero-side {
-  flex: none;
-  align-self: stretch;
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
 .hero-row .project-desc {
-  width: 200px;
-  margin: 116px 0 0;
+  margin: 0;
   line-height: 1.3;
+  text-align: center;
 }
 
 @media (min-width: 901px) {
-  .hero-row { margin-top: -104px; }
-}
-
-@media (max-width: 900px) {
-  .hero-row { flex-direction: column; align-items: center; }
-  .hero-side { width: 100%; align-self: auto; }
-  .hero-row .project-desc { width: auto; margin: 16px 0 0; text-align: center; }
+  .content-spacer-top + .project-main.hero-first { margin-top: 0; }
 }
 
 .project-section {
@@ -494,7 +479,7 @@ nav.projects .nav-bottom {
   position: relative;
   flex: none;
   aspect-ratio: 4 / 5;
-  width: min(calc((100vh - 128px) * 0.8), calc(100% - 292px));
+  width: min(max(calc((100vh - 280px) * 0.8), 220px), 100%);
 }
 
 .stage-img {
@@ -511,8 +496,8 @@ nav.projects .nav-bottom {
 .stage-img.active { opacity: 1; }
 
 .hero-thumbs {
-  margin-top: auto;
   display: flex;
+  justify-content: center;
   align-items: flex-end;
   gap: 14px;
 }
@@ -537,7 +522,6 @@ nav.projects .nav-bottom {
 
 @media (max-width: 900px) {
   .hero-stage { width: 100%; }
-  .hero-thumbs { margin-top: 20px; justify-content: center; }
 }
 
 /* ---------- Figma-style frame mockup ---------- */
