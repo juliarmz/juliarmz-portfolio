@@ -157,7 +157,7 @@ function openLightbox(active) {
   img.alt = active.alt;
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
-  addChrome(box, document.querySelectorAll(".stage-img").length > 1);
+  addChrome(box, active.closest(".hero-row").querySelectorAll(".stage-img").length > 1);
   document.body.appendChild(box);
   active.style.visibility = "hidden";
   lightbox = { kind: "image", box, img, active, ratio, closing: false };
@@ -233,13 +233,29 @@ function stepDesign(step) {
     showLightboxFrame(frames[(current + step + frames.length) % frames.length]);
     return;
   }
-  const row = document.querySelector(".hero-row");
+  const row = lightbox && !lightbox.closing ? lightbox.active.closest(".hero-row") : visibleCarousel();
   if (!row) return;
   const imgs = [...row.querySelectorAll(".stage-img")];
   const current = imgs.findIndex((i) => i.classList.contains("active"));
   const next = (current + step + imgs.length) % imgs.length;
   selectDesign(row, next);
   if (lightbox && !lightbox.closing) showLightboxImage(imgs[next]);
+}
+
+// The hero row (with more than one design) whose stage is most on screen.
+function visibleCarousel() {
+  let best = null;
+  let bestVisible = 0;
+  for (const row of document.querySelectorAll(".hero-row")) {
+    if (row.querySelectorAll(".stage-img").length < 2) continue;
+    const r = row.querySelector(".hero-stage").getBoundingClientRect();
+    const visible = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+    if (visible > bestVisible) {
+      best = row;
+      bestVisible = visible;
+    }
+  }
+  return best;
 }
 
 document.addEventListener("click", (e) => {
@@ -270,12 +286,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
   if (e.target.closest && e.target.closest("input, textarea, select")) return;
   const open = lightbox && !lightbox.closing;
-  if (!open) {
-    const row = document.querySelector(".hero-row");
-    if (!row) return;
-    const stageRect = row.querySelector(".hero-stage").getBoundingClientRect();
-    if (stageRect.bottom < 0 || stageRect.top > window.innerHeight) return;
-  }
+  if (!open && !visibleCarousel()) return;
   e.preventDefault();
   stepDesign(e.key === "ArrowRight" ? 1 : -1);
 });

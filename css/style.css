@@ -465,8 +465,14 @@ nav.projects .nav-bottom {
 .hero-row.single .project-desc { white-space: normal; max-width: min(100%, 720px); }
 .hero-row.single .hero-stage { height: max(calc(100vh - 212px), 260px); }
 
+/* carousel panel below the hero: stage + thumbnails, no copy line */
+.hero-row.carousel .hero-stage { height: max(calc(100vh - 250px), 260px); }
+.hero-row.carousel .hero-thumbs { flex-wrap: wrap; gap: 10px 12px; }
+.hero-row.carousel .hero-thumb img { height: 52px; }
+
 @media (max-width: 900px) {
   .hero-stage { height: auto; aspect-ratio: 4 / 5; }
+  .hero-row.carousel .hero-stage { height: auto; aspect-ratio: 1; }
   .hero-row.single .hero-stage { height: auto; aspect-ratio: 2400 / 2057; }
   .hero-row .project-desc { white-space: normal; }
 }
