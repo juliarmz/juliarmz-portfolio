@@ -352,10 +352,10 @@ let deskZ = 10;
 document.addEventListener("pointerdown", (e) => {
   if (e.pointerType === "touch" || e.button !== 0) return;
   if (e.target.closest(".lightbox")) return;
-  const canvas = e.target.closest(".figma-canvas");
+  const canvas = e.target.closest(".figma-canvas, .drag");
   if (!canvas) return;
   const pane = canvas.closest(".content-pane");
-  const host = canvas.closest(".project-main");
+  const host = canvas.matches(".drag") ? canvas.closest(".drag-stage") : canvas.closest(".project-main");
   const rect = canvas.getBoundingClientRect();
   const paneRect = pane.getBoundingClientRect();
   const hostRect = host.getBoundingClientRect();
@@ -404,7 +404,7 @@ document.addEventListener("pointerup", endDrag);
 document.addEventListener("pointercancel", endDrag);
 
 document.addEventListener("dragstart", (e) => {
-  if (e.target.closest && e.target.closest(".figma-canvas")) e.preventDefault();
+  if (e.target.closest && e.target.closest(".figma-canvas, .drag")) e.preventDefault();
 });
 
 let pan = null;

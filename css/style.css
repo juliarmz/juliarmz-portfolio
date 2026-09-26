@@ -461,9 +461,36 @@ nav.projects .nav-bottom {
   width: auto;
 }
 
-/* single-image hero (no carousel); longer copy wraps onto two lines */
+/* single hero (no carousel); longer copy wraps onto two lines */
 .hero-row.single .project-desc { white-space: normal; max-width: min(100%, 720px); }
-.hero-row.single .hero-stage { height: max(calc(100vh - 212px), 260px); }
+.hero-row.single .hero-stage { height: auto; }
+
+/* loose collage whose pieces can be dragged around */
+.hero-stage .drag-stage {
+  width: min(100%, calc(max(100vh - 212px, 260px) * var(--cw) / var(--ch)));
+  margin: 0 auto;
+}
+.drag { cursor: grab; user-select: none; -webkit-user-drag: none; }
+.drag.dragging { cursor: grabbing; }
+.drag img { display: block; width: 100%; -webkit-user-drag: none; }
+.drag.cut-r { clip-path: inset(0 7.1% 0 0); }
+.drag.polaroid {
+  padding: 1.9cqw 1.55cqw 5.7cqw;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.18);
+  rotate: -8deg;
+}
+.drag.polaroid img { aspect-ratio: 0.84; object-fit: cover; }
+.drag.phone { position: absolute; }
+.drag.phone .screen {
+  position: absolute;
+  left: 25.4%;
+  top: 6.8%;
+  width: 47.1%;
+  height: 34.9%;
+  object-fit: cover;
+}
 
 /* carousel panel below the hero: stage + thumbnails, no copy line */
 .hero-row.carousel .hero-stage { height: max(calc(100vh - 250px), 260px); }
@@ -473,7 +500,7 @@ nav.projects .nav-bottom {
 @media (max-width: 900px) {
   .hero-stage { height: auto; aspect-ratio: 4 / 5; }
   .hero-row.carousel .hero-stage { height: auto; aspect-ratio: 1; }
-  .hero-row.single .hero-stage { height: auto; aspect-ratio: 2400 / 2057; }
+  .hero-row.single .hero-stage { height: auto; aspect-ratio: auto; }
   .hero-row .project-desc { white-space: normal; }
 }
 
