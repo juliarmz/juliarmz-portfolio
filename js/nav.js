@@ -160,7 +160,7 @@ function openLightbox(active) {
   addChrome(box, active.closest(".hero-row").querySelectorAll(".stage-img").length > 1);
   document.body.appendChild(box);
   active.style.visibility = "hidden";
-  lightbox = { kind: "image", box, img, active, ratio, closing: false };
+  lightbox = { kind: "image", box, img, active, ratio, closing: false, zoomed: false, zoomRect: null };
   img.getBoundingClientRect();
   box.classList.add("open");
   setRect(img, fitRect(ratio));
@@ -196,12 +196,54 @@ function closeLightbox() {
   }, 380);
 }
 
+// Second-level zoom: click the full-page image to magnify it, drag/scroll to pan.
+function clampPan(r) {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  return {
+    left: r.width > vw ? Math.min(0, Math.max(vw - r.width, r.left)) : (vw - r.width) / 2,
+    top: r.height > vh ? Math.min(0, Math.max(vh - r.height, r.top)) : (vh - r.height) / 2,
+    width: r.width,
+    height: r.height,
+  };
+}
+
+function toggleImageZoom(cx, cy) {
+  const { img, active, box } = lightbox;
+  img.style.transition = "";
+  const fit = fitRect(lightbox.ratio);
+  if (lightbox.zoomed) {
+    lightbox.zoomed = false;
+    box.classList.remove("zoomed");
+    setRect(img, fit);
+    return;
+  }
+  const scale = Math.min(3, Math.max(2, active.naturalWidth / fit.width));
+  const fx = Math.min(1, Math.max(0, (cx - fit.left) / fit.width));
+  const fy = Math.min(1, Math.max(0, (cy - fit.top) / fit.height));
+  const width = fit.width * scale;
+  const height = fit.height * scale;
+  lightbox.zoomRect = clampPan({ left: cx - fx * width, top: cy - fy * height, width, height });
+  lightbox.zoomed = true;
+  box.classList.add("zoomed");
+  setRect(img, lightbox.zoomRect);
+}
+
+function panImage(dx, dy, base) {
+  const zr = lightbox.zoomRect;
+  const r = clampPan({ left: base.left + dx, top: base.top + dy, width: zr.width, height: zr.height });
+  lightbox.zoomRect = r;
+  setRect(lightbox.img, r);
+}
+
 function showLightboxImage(next) {
   const { img, active } = lightbox;
   active.style.visibility = "";
   next.style.visibility = "hidden";
   lightbox.active = next;
   lightbox.ratio = next.naturalWidth / next.naturalHeight;
+  lightbox.zoomed = false;
+  lightbox.box.classList.remove("zoomed");
   img.style.transition = "none";
   img.src = next.currentSrc || next.src;
   img.alt = next.alt;
@@ -265,6 +307,10 @@ document.addEventListener("click", (e) => {
     stepDesign(Number(arrow.dataset.dir));
     return;
   }
+  if (lightbox && !lightbox.closing && lightbox.kind === "image" && e.target === lightbox.img) {
+    toggleImageZoom(e.clientX, e.clientY);
+    return;
+  }
   if (e.target.closest(".lightbox")) {
     closeLightbox();
     return;
@@ -293,8 +339,11 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("resize", () => {
   if (!lightbox || lightbox.closing) return;
-  if (lightbox.kind === "image") setRect(lightbox.img, fitRect(lightbox.ratio));
-  else lightbox.clone.style.transform = frameTransform(lightbox.rect);
+  if (lightbox.kind === "image") {
+    lightbox.zoomed = false;
+    lightbox.box.classList.remove("zoomed");
+    setRect(lightbox.img, fitRect(lightbox.ratio));
+  } else lightbox.clone.style.transform = frameTransform(lightbox.rect);
 });
 
 let drag = null;
@@ -357,3 +406,53 @@ document.addEventListener("pointercancel", endDrag);
 document.addEventListener("dragstart", (e) => {
   if (e.target.closest && e.target.closest(".figma-canvas")) e.preventDefault();
 });
+
+let pan = null;
+
+document.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0 || !lightbox || lightbox.closing || lightbox.kind !== "image") return;
+  if (!lightbox.zoomed || e.target !== lightbox.img) return;
+  const { left, top } = lightbox.zoomRect;
+  pan = { x: e.clientX, y: e.clientY, left, top, moved: false };
+  lightbox.img.style.transition = "none";
+  lightbox.box.classList.add("panning");
+  e.preventDefault();
+});
+
+document.addEventListener("pointermove", (e) => {
+  if (!pan) return;
+  const dx = e.clientX - pan.x;
+  const dy = e.clientY - pan.y;
+  if (Math.abs(dx) > 4 || Math.abs(dy) > 4) pan.moved = true;
+  panImage(dx, dy, pan);
+});
+
+function endPan() {
+  if (!pan) return;
+  if (lightbox) {
+    lightbox.box.classList.remove("panning");
+    lightbox.img.style.transition = "";
+  }
+  if (pan.moved) {
+    suppressClick = true;
+    setTimeout(() => {
+      suppressClick = false;
+    }, 60);
+  }
+  pan = null;
+}
+
+document.addEventListener("pointerup", endPan);
+document.addEventListener("pointercancel", endPan);
+
+// trackpad / mouse-wheel panning while magnified
+document.addEventListener(
+  "wheel",
+  (e) => {
+    if (!lightbox || lightbox.closing || lightbox.kind !== "image" || !lightbox.zoomed) return;
+    e.preventDefault();
+    lightbox.img.style.transition = "none";
+    panImage(-e.deltaX, -e.deltaY, lightbox.zoomRect);
+  },
+  { passive: false }
+);

@@ -548,10 +548,16 @@ nav.projects .nav-bottom {
 }
 
 .lightbox.open { background: var(--paper); }
+.lightbox.zoomed img { cursor: grab; }
+.lightbox.panning img { cursor: grabbing; }
 
 .lightbox img {
   position: fixed;
   display: block;
+  cursor: zoom-in;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
   transition: left 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
     top 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
     width 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
