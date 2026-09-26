@@ -128,13 +128,14 @@ function makeFrameClone(frame, rect) {
   return clone;
 }
 
-function addChrome(box) {
+function addChrome(box, arrows = true) {
   const close = document.createElement("button");
   close.type = "button";
   close.className = "lightbox-close";
   close.setAttribute("aria-label", "Close");
   close.textContent = "×";
   box.appendChild(close);
+  if (!arrows) return;
   for (const dir of [-1, 1]) {
     const arrow = document.createElement("button");
     arrow.type = "button";
@@ -156,7 +157,7 @@ function openLightbox(active) {
   img.alt = active.alt;
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
-  addChrome(box);
+  addChrome(box, document.querySelectorAll(".stage-img").length > 1);
   document.body.appendChild(box);
   active.style.visibility = "hidden";
   lightbox = { kind: "image", box, img, active, ratio, closing: false };

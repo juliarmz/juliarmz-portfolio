@@ -461,8 +461,12 @@ nav.projects .nav-bottom {
   width: auto;
 }
 
+/* single-image hero (no copy line, no carousel) */
+.hero-row.single .hero-stage { height: max(calc(100vh - 170px), 260px); }
+
 @media (max-width: 900px) {
   .hero-stage { height: auto; aspect-ratio: 4 / 5; }
+  .hero-row.single .hero-stage { height: auto; aspect-ratio: 2400 / 2057; }
   .hero-row .project-desc { white-space: normal; }
 }
 
