@@ -296,10 +296,12 @@ nav.projects .nav-bottom {
   margin-top: 8vh;
 }
 
-/* a plain image, no frame chrome, filling the full width of its panel */
+/* a plain image, no frame chrome, sized down a bit and centered so it
+   doesn't fill edge-to-edge, with extra clearance above it */
 .project-section .full-bleed {
   display: block;
-  width: 100%;
+  width: 78%;
+  margin: 4vh auto 0;
 }
 
 .project-gallery {
@@ -717,9 +719,9 @@ nav.projects .nav-bottom {
    widths, with the second frame pushed lower rather than corner-pinned.
    Scoped to min-width so it never fights the mobile stack override below. */
 @media (min-width: 1101px) {
-  .desk.wide { aspect-ratio: 1.6 / 1; }
+  .desk.wide { aspect-ratio: 1.3 / 1; }
   .desk.wide .desk-item { width: 66%; }
-  .desk.wide .desk-sketch { width: 78%; top: 58%; bottom: auto; }
+  .desk.wide .desk-sketch { width: 92%; top: 46%; bottom: auto; }
   .desk.wide .figma-frame { padding: 22px; }
   .desk.wide .figma-head { margin-bottom: 12px; }
 }
