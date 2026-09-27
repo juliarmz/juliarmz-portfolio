@@ -295,6 +295,12 @@ nav.projects .nav-bottom {
   margin-top: 8vh;
 }
 
+/* a plain image, no frame chrome, filling the full width of its panel */
+.project-section .full-bleed {
+  display: block;
+  width: 100%;
+}
+
 .project-gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -560,9 +566,9 @@ nav.projects .nav-bottom {
 /* a reference photo layered into the empty gap of the Inspo moodboard */
 .figma-frame > img.gap-photo {
   position: absolute;
-  left: 31%;
-  top: 17%;
-  width: 20%;
+  left: 30%;
+  top: 8.5%;
+  width: 26%;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
 }
 
