@@ -16,6 +16,24 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Manrope';
+  src: url('../assets/Branding/fonts/Manrope-Medium.woff2') format('woff2'),
+       url('../assets/Branding/fonts/Manrope-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('../assets/Branding/fonts/Manrope-ExtraBold.woff2') format('woff2'),
+       url('../assets/Branding/fonts/Manrope-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --red: #e0201b;
   --ink: #111111;
@@ -74,7 +92,7 @@ html, body {
 }
 
 .site-name {
-  font-weight: 400;
+  font-weight: 800;
   font-size: 28px;
   letter-spacing: -0.02em;
   text-decoration: none;
@@ -108,7 +126,7 @@ nav.projects .nav-bottom {
   gap: 10px;
   text-decoration: none;
   color: var(--ink);
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 1.3;
 }
