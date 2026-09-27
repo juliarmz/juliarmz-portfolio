@@ -105,7 +105,7 @@ function setRect(el, r) {
   el.style.height = r.height + "px";
 }
 
-function frameTransform(rect) {
+function frameFit(rect) {
   const pad = 32;
   const scale = Math.min(
     (window.innerWidth - pad * 2) / rect.width,
@@ -113,6 +113,11 @@ function frameTransform(rect) {
   );
   const tx = (window.innerWidth - rect.width * scale) / 2 - rect.left;
   const ty = (window.innerHeight - rect.height * scale) / 2 - rect.top;
+  return { scale, tx, ty };
+}
+
+function frameTransform(rect) {
+  const { scale, tx, ty } = frameFit(rect);
   return "translate(" + tx + "px, " + ty + "px) scale(" + scale + ")";
 }
 
@@ -176,7 +181,7 @@ function openFrameLightbox(frame) {
   addChrome(box);
   document.body.appendChild(box);
   frame.style.visibility = "hidden";
-  lightbox = { kind: "frame", box, clone, active: frame, rect, closing: false };
+  lightbox = { kind: "frame", box, clone, active: frame, rect, closing: false, zoomed: false };
   clone.getBoundingClientRect();
   box.classList.add("open");
   clone.style.transform = frameTransform(rect);
@@ -236,6 +241,50 @@ function panImage(dx, dy, base) {
   setRect(lightbox.img, r);
 }
 
+// Same second-level zoom, for a zoomed figma-frame: click it again to
+// magnify further (around the click point), drag or scroll to pan.
+function applyFrameZoom() {
+  const { rect, zoomLeft, zoomTop, zoomScale } = lightbox;
+  lightbox.clone.style.transform =
+    "translate(" + (zoomLeft - rect.left) + "px, " + (zoomTop - rect.top) + "px) scale(" + zoomScale + ")";
+}
+
+function toggleFrameZoom(cx, cy) {
+  const { clone, rect } = lightbox;
+  clone.style.transition = "";
+  if (lightbox.zoomed) {
+    lightbox.zoomed = false;
+    lightbox.box.classList.remove("zoomed");
+    clone.style.transform = frameTransform(rect);
+    return;
+  }
+  const fit = frameFit(rect);
+  const fitLeft = rect.left + fit.tx;
+  const fitTop = rect.top + fit.ty;
+  const fitWidth = rect.width * fit.scale;
+  const fitHeight = rect.height * fit.scale;
+  const fx = Math.min(1, Math.max(0, (cx - fitLeft) / fitWidth));
+  const fy = Math.min(1, Math.max(0, (cy - fitTop) / fitHeight));
+  const scale = fit.scale * 2.4;
+  const width = rect.width * scale;
+  const height = rect.height * scale;
+  const clamped = clampPan({ left: cx - fx * width, top: cy - fy * height, width, height });
+  lightbox.zoomed = true;
+  lightbox.zoomScale = scale;
+  lightbox.zoomLeft = clamped.left;
+  lightbox.zoomTop = clamped.top;
+  lightbox.box.classList.add("zoomed");
+  applyFrameZoom();
+}
+
+function panFrame(dx, dy, base) {
+  const { rect, zoomScale } = lightbox;
+  const clamped = clampPan({ left: base.left + dx, top: base.top + dy, width: rect.width * zoomScale, height: rect.height * zoomScale });
+  lightbox.zoomLeft = clamped.left;
+  lightbox.zoomTop = clamped.top;
+  applyFrameZoom();
+}
+
 function showLightboxImage(next) {
   const { img, active } = lightbox;
   active.style.visibility = "";
@@ -266,6 +315,8 @@ function showLightboxFrame(next) {
   lightbox.clone = clone;
   lightbox.active = next;
   lightbox.rect = rect;
+  lightbox.zoomed = false;
+  lightbox.box.classList.remove("zoomed");
 }
 
 function stepDesign(step) {
@@ -311,6 +362,10 @@ document.addEventListener("click", (e) => {
     toggleImageZoom(e.clientX, e.clientY);
     return;
   }
+  if (lightbox && !lightbox.closing && lightbox.kind === "frame" && lightbox.clone.contains(e.target)) {
+    toggleFrameZoom(e.clientX, e.clientY);
+    return;
+  }
   if (e.target.closest(".lightbox")) {
     closeLightbox();
     return;
@@ -339,11 +394,10 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("resize", () => {
   if (!lightbox || lightbox.closing) return;
-  if (lightbox.kind === "image") {
-    lightbox.zoomed = false;
-    lightbox.box.classList.remove("zoomed");
-    setRect(lightbox.img, fitRect(lightbox.ratio));
-  } else lightbox.clone.style.transform = frameTransform(lightbox.rect);
+  lightbox.zoomed = false;
+  lightbox.box.classList.remove("zoomed");
+  if (lightbox.kind === "image") setRect(lightbox.img, fitRect(lightbox.ratio));
+  else lightbox.clone.style.transform = frameTransform(lightbox.rect);
 });
 
 let drag = null;
@@ -356,6 +410,7 @@ let resize = null;
 
 document.addEventListener("pointerdown", (e) => {
   if (e.pointerType === "touch" || e.button !== 0) return;
+  if (e.target.closest(".lightbox")) return;
   const handle = e.target.closest(".handle");
   if (!handle) return;
   const canvas = handle.closest(".figma-canvas");
@@ -494,11 +549,14 @@ document.addEventListener("dragstart", (e) => {
 let pan = null;
 
 document.addEventListener("pointerdown", (e) => {
-  if (e.button !== 0 || !lightbox || lightbox.closing || lightbox.kind !== "image") return;
-  if (!lightbox.zoomed || e.target !== lightbox.img) return;
-  const { left, top } = lightbox.zoomRect;
+  if (e.button !== 0 || !lightbox || lightbox.closing || !lightbox.zoomed) return;
+  const el = lightbox.kind === "image" ? lightbox.img : lightbox.clone;
+  const onTarget = lightbox.kind === "image" ? e.target === el : el.contains(e.target);
+  if (!onTarget) return;
+  const left = lightbox.kind === "image" ? lightbox.zoomRect.left : lightbox.zoomLeft;
+  const top = lightbox.kind === "image" ? lightbox.zoomRect.top : lightbox.zoomTop;
   pan = { x: e.clientX, y: e.clientY, left, top, moved: false };
-  lightbox.img.style.transition = "none";
+  el.style.transition = "none";
   lightbox.box.classList.add("panning");
   e.preventDefault();
 });
@@ -508,14 +566,15 @@ document.addEventListener("pointermove", (e) => {
   const dx = e.clientX - pan.x;
   const dy = e.clientY - pan.y;
   if (Math.abs(dx) > 4 || Math.abs(dy) > 4) pan.moved = true;
-  panImage(dx, dy, pan);
+  if (lightbox.kind === "image") panImage(dx, dy, pan);
+  else panFrame(dx, dy, pan);
 });
 
 function endPan() {
   if (!pan) return;
   if (lightbox) {
     lightbox.box.classList.remove("panning");
-    lightbox.img.style.transition = "";
+    (lightbox.kind === "image" ? lightbox.img : lightbox.clone).style.transition = "";
   }
   if (pan.moved) {
     suppressClick = true;
@@ -533,10 +592,15 @@ document.addEventListener("pointercancel", endPan);
 document.addEventListener(
   "wheel",
   (e) => {
-    if (!lightbox || lightbox.closing || lightbox.kind !== "image" || !lightbox.zoomed) return;
+    if (!lightbox || lightbox.closing || !lightbox.zoomed) return;
     e.preventDefault();
-    lightbox.img.style.transition = "none";
-    panImage(-e.deltaX, -e.deltaY, lightbox.zoomRect);
+    if (lightbox.kind === "image") {
+      lightbox.img.style.transition = "none";
+      panImage(-e.deltaX, -e.deltaY, lightbox.zoomRect);
+    } else {
+      lightbox.clone.style.transition = "none";
+      panFrame(-e.deltaX, -e.deltaY, { left: lightbox.zoomLeft, top: lightbox.zoomTop });
+    }
   },
   { passive: false }
 );

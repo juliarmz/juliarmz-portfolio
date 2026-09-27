@@ -624,8 +624,10 @@ nav.projects .nav-bottom {
 }
 
 .lightbox.open { background: var(--paper); }
-.lightbox.zoomed img { cursor: grab; }
-.lightbox.panning img { cursor: grabbing; }
+.lightbox.zoomed img,
+.lightbox.zoomed .zoom-canvas { cursor: grab; }
+.lightbox.panning img,
+.lightbox.panning .zoom-canvas { cursor: grabbing; }
 
 .lightbox img {
   position: fixed;
