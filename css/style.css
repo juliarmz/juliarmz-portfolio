@@ -553,10 +553,19 @@ nav.projects .nav-bottom {
   z-index: 10;
 }
 
-.handle.tl { top: -5px; left: -5px; }
-.handle.tr { top: -5px; right: -5px; }
-.handle.bl { bottom: -5px; left: -5px; }
-.handle.br { bottom: -5px; right: -5px; }
+/* Invisible padding around each handle so it's easier to grab; pointer
+   events landing on this pseudo-element still report the .handle as the
+   target, so the JS hit-test (closest(".handle")) still matches. */
+.figma-frame .handle::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+}
+
+.handle.tl { top: -5px; left: -5px; cursor: nwse-resize; }
+.handle.tr { top: -5px; right: -5px; cursor: nesw-resize; }
+.handle.bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
+.handle.br { bottom: -5px; right: -5px; cursor: nwse-resize; }
 
 @media (max-width: 900px) {
   .figma-canvas { padding: 12px 12px 12px; }

@@ -349,9 +349,93 @@ window.addEventListener("resize", () => {
 let drag = null;
 let deskZ = 10;
 
+// Resize a .figma-canvas by dragging one of its corner handles: the
+// opposite corner stays anchored on screen while the dragged corner
+// tracks the pointer, scaling the whole frame (and its contents) in place.
+let resize = null;
+
+document.addEventListener("pointerdown", (e) => {
+  if (e.pointerType === "touch" || e.button !== 0) return;
+  const handle = e.target.closest(".handle");
+  if (!handle) return;
+  const canvas = handle.closest(".figma-canvas");
+  if (!canvas) return;
+  const host = canvas.closest(".project-main");
+  const rect = canvas.getBoundingClientRect();
+  const hostRect = host.getBoundingClientRect();
+  const corner = handle.classList.contains("tl")
+    ? "tl"
+    : handle.classList.contains("tr")
+    ? "tr"
+    : handle.classList.contains("bl")
+    ? "bl"
+    : "br";
+  const anchor = {
+    tl: { x: rect.right, y: rect.bottom },
+    tr: { x: rect.left, y: rect.bottom },
+    bl: { x: rect.right, y: rect.top },
+    br: { x: rect.left, y: rect.top },
+  }[corner];
+  resize = {
+    canvas,
+    corner,
+    anchor,
+    startDist: Math.hypot(e.clientX - anchor.x, e.clientY - anchor.y) || 1,
+    startWidth: rect.width,
+    baseDx: Number(canvas.dataset.dx || 0),
+    baseDy: Number(canvas.dataset.dy || 0),
+    minWidth: 160,
+    maxWidth: Math.max(160, hostRect.width - 24),
+    moved: false,
+  };
+  canvas.classList.add("dragging");
+  canvas.style.zIndex = ++deskZ;
+  e.preventDefault();
+});
+
+document.addEventListener("pointermove", (e) => {
+  if (!resize) return;
+  if (Math.abs(e.clientX - resize.anchor.x) > 4 || Math.abs(e.clientY - resize.anchor.y) > 4) resize.moved = true;
+  const dist = Math.hypot(e.clientX - resize.anchor.x, e.clientY - resize.anchor.y) || 1;
+  const width = Math.min(resize.maxWidth, Math.max(resize.minWidth, resize.startWidth * (dist / resize.startDist)));
+
+  // Measure with the transform pinned to its drag-start value so the
+  // correction below is computed fresh each move, not compounded.
+  resize.canvas.style.transform = "translate(" + resize.baseDx + "px, " + resize.baseDy + "px)";
+  resize.canvas.style.width = width + "px";
+  const rect = resize.canvas.getBoundingClientRect();
+  const current = {
+    tl: { x: rect.right, y: rect.bottom },
+    tr: { x: rect.left, y: rect.bottom },
+    bl: { x: rect.right, y: rect.top },
+    br: { x: rect.left, y: rect.top },
+  }[resize.corner];
+  const dx = resize.baseDx + (resize.anchor.x - current.x);
+  const dy = resize.baseDy + (resize.anchor.y - current.y);
+  resize.canvas.dataset.dx = dx;
+  resize.canvas.dataset.dy = dy;
+  resize.canvas.style.transform = "translate(" + dx + "px, " + dy + "px)";
+});
+
+function endResize() {
+  if (!resize) return;
+  resize.canvas.classList.remove("dragging");
+  if (resize.moved) {
+    suppressClick = true;
+    setTimeout(() => {
+      suppressClick = false;
+    }, 60);
+  }
+  resize = null;
+}
+
+document.addEventListener("pointerup", endResize);
+document.addEventListener("pointercancel", endResize);
+
 document.addEventListener("pointerdown", (e) => {
   if (e.pointerType === "touch" || e.button !== 0) return;
   if (e.target.closest(".lightbox")) return;
+  if (e.target.closest(".handle")) return;
   const canvas = e.target.closest(".figma-canvas, .drag");
   if (!canvas) return;
   const pane = canvas.closest(".content-pane");
