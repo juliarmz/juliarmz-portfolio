@@ -146,6 +146,7 @@ nav.projects .nav-bottom {
   min-width: 0;
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: calc(var(--border-size) + var(--inset-x) + var(--edge-gap));
 }
 
@@ -716,9 +717,11 @@ nav.projects .nav-bottom {
    widths, with the second frame pushed lower rather than corner-pinned.
    Scoped to min-width so it never fights the mobile stack override below. */
 @media (min-width: 1101px) {
-  .desk.wide { aspect-ratio: 2 / 1; }
-  .desk.wide .desk-item { width: 62%; }
-  .desk.wide .desk-sketch { top: 56%; bottom: auto; }
+  .desk.wide { aspect-ratio: 1.6 / 1; }
+  .desk.wide .desk-item { width: 66%; }
+  .desk.wide .desk-sketch { width: 78%; top: 58%; bottom: auto; }
+  .desk.wide .figma-frame { padding: 22px; }
+  .desk.wide .figma-head { margin-bottom: 12px; }
 }
 
 @media (max-width: 1100px) {
