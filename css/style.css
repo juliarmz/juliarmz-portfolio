@@ -729,6 +729,10 @@ nav.projects .nav-bottom {
   .desk .desk-item { position: relative; width: 100%; }
 }
 
+/* .lightbox img (below) sets position:fixed for the plain image-lightbox
+   case; a frame clone's own <img> tags live inside .lightbox too but must
+   stay in normal flow so .figma-frame sizes around them. Same specificity
+   as that rule, so it has to come after it to win (see .lightbox img). */
 .zoom-canvas {
   position: fixed;
   margin: 0;
@@ -741,6 +745,17 @@ nav.projects .nav-bottom {
 .zoom-canvas .figma-frame { padding: 12px; }
 .zoom-canvas .figma-head { margin-bottom: 8px; }
 .zoom-canvas .collage .cap { font-size: max(10px, 1.7cqw); }
+
+/* .lightbox img (further down) sets position:fixed for the plain
+   image-lightbox case, which also matches a frame clone's own <img>
+   tags since they live inside .lightbox too. A plain <img> directly in
+   a frame (no .collage/.float wrapper) needs to stay in normal flow so
+   .figma-frame sizes around it; .gap-photo keeps its own absolute
+   layering, so it's excluded here. */
+.zoom-canvas .figma-frame > img:not(.gap-photo) {
+  position: static;
+  width: 100%;
+}
 
 @media (max-width: 1100px) {
   .desk .collage .cap,
