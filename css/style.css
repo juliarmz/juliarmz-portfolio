@@ -331,6 +331,12 @@ nav.projects .nav-bottom {
   margin-top: 18vh;
 }
 
+/* breaks out of project-main's 1200px cap to span the full content
+   area, same width as the sketchbook masonry gallery */
+.project-section.pride-panel {
+  text-align: center;
+}
+
 /* a plain image, no frame chrome, sized down a bit and centered so it
    doesn't fill edge-to-edge, with extra clearance above it */
 .project-section .full-bleed {
