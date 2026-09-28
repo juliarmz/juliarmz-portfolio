@@ -544,6 +544,14 @@ nav.projects .nav-bottom {
 /* two (or three) images shown side by side at once (not a toggled
    carousel); all stay clickable to zoom, and arrow keys still work
    inside the lightbox */
+.hero-row.pair,
+.hero-row.trio {
+  gap: 48px;
+}
+.hero-first .hero-row.pair {
+  min-height: max(calc(100vh - 260px), 420px);
+  justify-content: center;
+}
 .hero-row.pair .hero-stage,
 .hero-row.trio .hero-stage {
   position: static;
