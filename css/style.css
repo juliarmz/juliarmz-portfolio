@@ -327,6 +327,10 @@ nav.projects .nav-bottom {
   margin-top: 8vh;
 }
 
+.project-section.collage-panel {
+  margin-top: 18vh;
+}
+
 /* a plain image, no frame chrome, sized down a bit and centered so it
    doesn't fill edge-to-edge, with extra clearance above it */
 .project-section .full-bleed {
@@ -519,7 +523,7 @@ nav.projects .nav-bottom {
   margin: 0 auto;
 }
 .hero-stage .drag-stage.big {
-  width: min(100%, calc(max(100vh - 212px, 260px) * var(--cw) / var(--ch) * 1.18));
+  width: min(88%, calc(max(100vh - 212px, 260px) * var(--cw) / var(--ch) * 0.92));
 }
 .drag { cursor: grab; user-select: none; -webkit-user-drag: none; }
 .drag.dragging { cursor: grabbing; }
