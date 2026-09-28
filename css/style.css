@@ -573,6 +573,9 @@ nav.projects .nav-bottom {
   gap: 24px;
   flex-wrap: wrap;
 }
+.hero-row.trio .hero-stage {
+  gap: 10px;
+}
 .hero-row.pair .pair-item,
 .hero-row.trio .trio-item {
   display: flex;
@@ -593,13 +596,16 @@ nav.projects .nav-bottom {
   max-height: max(calc(100vh - 320px), 260px);
 }
 .hero-row.trio .trio-item {
-  max-width: 30%;
+  max-width: 32%;
 }
 .hero-row.pair .pair-item {
   max-width: 47%;
 }
 .hero-row.pair .stage-img {
   max-height: max(calc(100vh - 260px), 300px);
+}
+.hero-row.trio .stage-img {
+  max-height: max(calc(100vh - 260px), 320px);
 }
 .hero-row.pair .pair-caption,
 .hero-row.trio .trio-caption {
