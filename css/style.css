@@ -275,6 +275,10 @@ nav.projects .nav-bottom {
   text-decoration: none;
 }
 
+.project-main .project-desc a:hover {
+  text-decoration: underline;
+}
+
 .project-main h2 {
   font-size: 16px;
   font-weight: 400;
