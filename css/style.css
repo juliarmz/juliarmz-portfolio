@@ -562,7 +562,8 @@ nav.projects .nav-bottom {
   gap: 24px;
   flex-wrap: wrap;
 }
-.hero-row.pair .pair-item {
+.hero-row.pair .pair-item,
+.hero-row.trio .trio-item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -577,23 +578,25 @@ nav.projects .nav-bottom {
   pointer-events: auto;
   cursor: zoom-in;
   width: auto;
+  max-width: 100%;
   max-height: max(calc(100vh - 320px), 260px);
 }
-.hero-row.pair .stage-img {
-  max-width: 100%;
-}
-.hero-row.trio .stage-img {
+.hero-row.trio .trio-item {
   max-width: 30%;
 }
-.hero-row.pair .pair-caption {
+.hero-row.pair .pair-caption,
+.hero-row.trio .trio-caption {
   margin: 0;
   font-size: 14px;
+  color: var(--red);
 }
-.hero-row.pair .pair-caption a {
+.hero-row.pair .pair-caption a,
+.hero-row.trio .trio-caption a {
   color: var(--red);
   text-decoration: none;
 }
-.hero-row.pair .pair-caption a:hover {
+.hero-row.pair .pair-caption a:hover,
+.hero-row.trio .trio-caption a:hover {
   text-decoration: underline;
 }
 
@@ -603,7 +606,8 @@ nav.projects .nav-bottom {
   .hero-row.single .hero-stage { height: auto; aspect-ratio: auto; }
   .hero-row.pair .hero-stage,
   .hero-row.trio .hero-stage { flex-direction: column; flex-wrap: nowrap; align-items: center; aspect-ratio: auto; }
-  .hero-row.pair .pair-item { max-width: 100%; }
+  .hero-row.pair .pair-item,
+  .hero-row.trio .trio-item { max-width: 100%; }
   .hero-row.pair .stage-img,
   .hero-row.trio .stage-img { max-width: 100%; max-height: none; }
   .hero-row .project-desc { white-space: normal; }
