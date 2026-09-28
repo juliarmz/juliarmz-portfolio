@@ -518,6 +518,9 @@ nav.projects .nav-bottom {
   width: min(100%, calc(max(100vh - 212px, 260px) * var(--cw) / var(--ch)));
   margin: 0 auto;
 }
+.hero-stage .drag-stage.big {
+  width: min(100%, calc(max(100vh - 212px, 260px) * var(--cw) / var(--ch) * 1.18));
+}
 .drag { cursor: grab; user-select: none; -webkit-user-drag: none; }
 .drag.dragging { cursor: grabbing; }
 .drag img { display: block; width: 100%; -webkit-user-drag: none; }
@@ -587,6 +590,12 @@ nav.projects .nav-bottom {
 }
 .hero-row.trio .trio-item {
   max-width: 30%;
+}
+.hero-row.pair .pair-item {
+  max-width: 47%;
+}
+.hero-row.pair .stage-img {
+  max-height: max(calc(100vh - 260px), 300px);
 }
 .hero-row.pair .pair-caption,
 .hero-row.trio .trio-caption {
