@@ -529,7 +529,7 @@ nav.projects .nav-bottom {
   margin: 0 auto;
 }
 .hero-stage .drag-stage.big {
-  width: min(96%, calc(max(100vh - 180px, 320px) * var(--cw) / var(--ch) * 1.6));
+  width: min(82%, calc(max(100vh - 220px, 300px) * var(--cw) / var(--ch) * 1.15));
 }
 .drag { cursor: grab; user-select: none; -webkit-user-drag: none; }
 .drag.dragging { cursor: grabbing; }
