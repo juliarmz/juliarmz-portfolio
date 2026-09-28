@@ -329,9 +329,16 @@ function stepDesign(step) {
   const row = lightbox && !lightbox.closing ? lightbox.active.closest(".hero-row") : visibleCarousel();
   if (!row) return;
   const imgs = [...row.querySelectorAll(".stage-img")];
-  const current = imgs.findIndex((i) => i.classList.contains("active"));
+  // In a "pair"/"trio" row every image stays marked active (they're all
+  // shown at once), so the open lightbox's own image is the only reliable
+  // way to know which one is "current"; a toggled carousel has exactly
+  // one active image, which doubles as its shown design.
+  const multiView = row.classList.contains("pair") || row.classList.contains("trio");
+  const current = multiView && lightbox && !lightbox.closing
+    ? imgs.indexOf(lightbox.active)
+    : imgs.findIndex((i) => i.classList.contains("active"));
   const next = (current + step + imgs.length) % imgs.length;
-  selectDesign(row, next);
+  if (!multiView) selectDesign(row, next);
   if (lightbox && !lightbox.closing) showLightboxImage(imgs[next]);
 }
 
@@ -340,7 +347,7 @@ function visibleCarousel() {
   let best = null;
   let bestVisible = 0;
   for (const row of document.querySelectorAll(".hero-row")) {
-    if (row.classList.contains("pair")) continue;
+    if (row.classList.contains("pair") || row.classList.contains("trio")) continue;
     if (row.querySelectorAll(".stage-img").length < 2) continue;
     const r = row.querySelector(".hero-stage").getBoundingClientRect();
     const visible = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
