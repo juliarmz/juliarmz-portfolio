@@ -340,6 +340,7 @@ function visibleCarousel() {
   let best = null;
   let bestVisible = 0;
   for (const row of document.querySelectorAll(".hero-row")) {
+    if (row.classList.contains("pair")) continue;
     if (row.querySelectorAll(".stage-img").length < 2) continue;
     const r = row.querySelector(".hero-stage").getBoundingClientRect();
     const visible = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
