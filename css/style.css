@@ -449,13 +449,6 @@ nav.projects .nav-bottom {
   display: block;
 }
 
-/* Brinn and CJ flat-lay: a small, crisp offset shadow on every piece so
-   they all read the same regardless of whether the source file itself
-   has a shadow baked in */
-.bcj-collage .float {
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.18);
-}
-
 .collage .swatch {
   width: calc(132 / var(--cw, 1760) * 100%);
   height: calc(57 / var(--ch, 1190) * 100%);
