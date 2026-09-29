@@ -881,12 +881,27 @@ nav.projects .nav-bottom {
   .figma-frame > .mood-cap { left: 52%; font-size: 9px; }
 }
 
-/* DJs Against Apartheid: same size as TOTT's desk (no wide/compact
-   overrides), just moodboard on top and sketchpad nudged down/right so
-   it isn't hidden under the moodboard's corner */
+/* DJs Against Apartheid: Moodboard and Sketchpad side by side, filling
+   the panel width, instead of the shared desk's overlapping corners */
 @media (min-width: 1101px) {
-  .daa-desk .desk-mood { z-index: 2; }
-  .daa-desk .desk-sketch { z-index: 1; left: 42%; top: 46%; right: auto; bottom: auto; }
+  .daa-desk {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .daa-desk .desk-item {
+    position: relative;
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    left: auto;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    z-index: auto;
+  }
 }
 
 /* .lightbox img (below) sets position:fixed for the plain image-lightbox
