@@ -333,22 +333,6 @@ nav.projects .nav-bottom {
   max-width: 420px;
 }
 @media (min-width: 901px) {
-  /* the flyer photo's own visual content (poster + tickets) sits left
-     of the image's true center because of empty black margin baked
-     into the right side of the file, so nudge the caption to align
-     with that content rather than the image's geometric bounding box.
-     Scoped above the mobile breakpoint where the caption wraps to a
-     centered multi-line paragraph instead of one offset line. */
-  .hero-row.featured .project-desc {
-    /* the needed shift is a fixed fraction of the image's rendered
-       width, and that width tracks the hero-stage's height (itself
-       100vh-driven), so the offset must scale with vh too or it falls
-       short on taller viewports instead of staying proportional */
-    transform: translateX(calc(6.26px - 3.13vh));
-  }
-}
-
-@media (min-width: 901px) {
   .content-spacer-top + .project-main.hero-first { margin-top: 0; }
 }
 

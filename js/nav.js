@@ -34,12 +34,43 @@ async function loadPage(url, push) {
     contentPane.scrollTop = 0;
     document.title = doc.title;
     setActiveNav(new URL(url, location.href).pathname);
+    alignFeaturedCaptions();
 
     if (push) history.pushState({ url }, "", url);
   } catch (err) {
     location.href = url;
   }
 }
+
+// A featured hero image's own artwork can sit off-center within its
+// file (e.g. empty margin baked into one side), which makes a caption
+// centered on the image's bounding box look off. data-content-center
+// on the image (0-1, fraction of width) marks where its visual content
+// is actually centered; measured live so it holds at any image/stage
+// size instead of a fixed offset tuned for one viewport.
+function alignFeaturedCaptions() {
+  document.querySelectorAll(".hero-row.featured").forEach((row) => {
+    const desc = row.querySelector(".project-desc");
+    const img = row.querySelector(".stage-img[data-content-center]");
+    if (!desc || !img) return;
+    const apply = () => {
+      desc.style.transform = "";
+      if (window.innerWidth <= 900) return;
+      const imgRect = img.getBoundingClientRect();
+      if (!imgRect.width) return;
+      const descRect = desc.getBoundingClientRect();
+      const frac = parseFloat(img.dataset.contentCenter);
+      const idealX = imgRect.left + frac * imgRect.width;
+      const currentCenter = (descRect.left + descRect.right) / 2;
+      desc.style.transform = "translateX(" + (idealX - currentCenter) + "px)";
+    };
+    if (img.complete) apply();
+    else img.addEventListener("load", apply, { once: true });
+  });
+}
+
+window.addEventListener("load", alignFeaturedCaptions);
+window.addEventListener("resize", alignFeaturedCaptions);
 
 document.addEventListener("click", (e) => {
   if (e.defaultPrevented || e.button !== 0) return;
