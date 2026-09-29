@@ -193,7 +193,11 @@ function openLightbox(active) {
   img.alt = active.alt;
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
-  addChrome(box, active.closest(".hero-row").querySelectorAll(".stage-img").length > 1);
+  const bcjCollage = active.closest(".bcj-collage");
+  const multiple = bcjCollage
+    ? bcjCollage.querySelectorAll(".float").length > 1
+    : active.closest(".hero-row").querySelectorAll(".stage-img").length > 1;
+  addChrome(box, multiple);
   document.body.appendChild(box);
   active.style.visibility = "hidden";
   lightbox = { kind: "image", box, img, active, ratio, closing: false, zoomed: false, zoomRect: null };
@@ -355,6 +359,13 @@ function stepDesign(step) {
     const frames = [...document.querySelectorAll(".figma-canvas")];
     const current = frames.indexOf(lightbox.active);
     showLightboxFrame(frames[(current + step + frames.length) % frames.length]);
+    return;
+  }
+  const bcjCollage = lightbox && !lightbox.closing ? lightbox.active.closest(".bcj-collage") : null;
+  if (bcjCollage) {
+    const imgs = [...bcjCollage.querySelectorAll(".float")].filter((el) => el.tagName === "IMG");
+    const current = imgs.indexOf(lightbox.active);
+    showLightboxImage(imgs[(current + step + imgs.length) % imgs.length]);
     return;
   }
   const row = lightbox && !lightbox.closing ? lightbox.active.closest(".hero-row") : visibleCarousel();
