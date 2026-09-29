@@ -331,38 +331,6 @@ nav.projects .nav-bottom {
   margin-top: 18vh;
 }
 
-/* dev helper: exports the drag-stage's current arrangement so it can
-   be baked into the HTML instead of guessed from a screenshot */
-.layout-export-btn {
-  display: block;
-  margin: 16px auto 0;
-  padding: 6px 14px;
-  border: 1px solid var(--red);
-  border-radius: 20px;
-  background: none;
-  color: var(--red);
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
-}
-.layout-export-btn:hover {
-  background: var(--red);
-  color: #fff;
-}
-.layout-export-output {
-  display: none;
-  width: 100%;
-  max-width: 420px;
-  height: 220px;
-  margin: 10px auto 0;
-  padding: 10px;
-  border: 1px solid var(--red);
-  border-radius: 6px;
-  font-family: monospace;
-  font-size: 12px;
-  color: var(--ink);
-}
-
 /* breaks out of project-main's 1200px cap to span the full content
    area, same width as the sketchbook masonry gallery */
 .project-section.pride-panel {
