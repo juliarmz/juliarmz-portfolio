@@ -332,6 +332,17 @@ nav.projects .nav-bottom {
 .hero-row.featured .project-desc {
   max-width: 420px;
 }
+@media (min-width: 901px) {
+  /* the flyer photo's own visual content (poster + tickets) sits left
+     of the image's true center because of empty black margin baked
+     into the right side of the file, so nudge the caption to align
+     with that content rather than the image's geometric bounding box.
+     Scoped above the mobile breakpoint where the caption wraps to a
+     centered multi-line paragraph instead of one offset line. */
+  .hero-row.featured .project-desc {
+    transform: translateX(-22px);
+  }
+}
 
 @media (min-width: 901px) {
   .content-spacer-top + .project-main.hero-first { margin-top: 0; }
@@ -538,7 +549,7 @@ nav.projects .nav-bottom {
    shadow like the other Brinn & CJ stationery mockups, so match those
    with a soft CSS elevation shadow instead */
 .cocktail-shadow {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.16);
 }
 
 /* single hero (no carousel); longer copy wraps onto two lines */
