@@ -325,6 +325,13 @@ nav.projects .nav-bottom {
 .hero-row.featured .hero-stage {
   height: max(calc(100vh - 200px), 340px);
 }
+/* deliberately narrower than the image below it: at nearly-equal
+   widths, tiny sub-pixel differences between a ragged text line and a
+   hard image edge read as "not aligned" even though both share the
+   same center axis */
+.hero-row.featured .project-desc {
+  max-width: 420px;
+}
 
 @media (min-width: 901px) {
   .content-spacer-top + .project-main.hero-first { margin-top: 0; }
@@ -874,11 +881,10 @@ nav.projects .nav-bottom {
   .figma-frame > .mood-cap { left: 52%; font-size: 9px; }
 }
 
-/* DJs Against Apartheid: smaller frames, moodboard on top, sketchpad
-   nudged down/right so it isn't hidden under the moodboard's corner */
+/* DJs Against Apartheid: same size as TOTT's desk (no wide/compact
+   overrides), just moodboard on top and sketchpad nudged down/right so
+   it isn't hidden under the moodboard's corner */
 @media (min-width: 1101px) {
-  .daa-desk { width: min(calc(100% - 24px), calc((100vh - 100px) * 0.95)); }
-  .daa-desk .desk-item { width: 52%; }
   .daa-desk .desk-mood { z-index: 2; }
   .daa-desk .desk-sketch { z-index: 1; left: 42%; top: 46%; right: auto; bottom: auto; }
 }
