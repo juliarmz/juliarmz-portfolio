@@ -534,6 +534,13 @@ nav.projects .nav-bottom {
   width: auto;
 }
 
+/* the cocktail menu is a full-bleed illustration with no baked-in card
+   shadow like the other Brinn & CJ stationery mockups, so match those
+   with a soft CSS elevation shadow instead */
+.cocktail-shadow {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
 /* single hero (no carousel); longer copy wraps onto two lines */
 .hero-row.single .project-desc { white-space: normal; max-width: min(100%, 720px); }
 .hero-row.single .hero-stage { height: auto; }
