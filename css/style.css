@@ -318,6 +318,14 @@ nav.projects .nav-bottom {
   white-space: nowrap;
 }
 
+/* extra breathing room above the hero image, and a bigger stage */
+.hero-row.featured {
+  gap: 48px;
+}
+.hero-row.featured .hero-stage {
+  height: max(calc(100vh - 200px), 340px);
+}
+
 @media (min-width: 901px) {
   .content-spacer-top + .project-main.hero-first { margin-top: 0; }
 }
@@ -864,6 +872,15 @@ nav.projects .nav-bottom {
   .desk { width: calc(100% - 24px); aspect-ratio: auto; display: flex; flex-direction: column; gap: 32px; }
   .desk .desk-item { position: relative; width: 100%; }
   .figma-frame > .mood-cap { left: 52%; font-size: 9px; }
+}
+
+/* DJs Against Apartheid: smaller frames, moodboard on top, sketchpad
+   nudged down/right so it isn't hidden under the moodboard's corner */
+@media (min-width: 1101px) {
+  .daa-desk { width: min(calc(100% - 24px), calc((100vh - 100px) * 0.95)); }
+  .daa-desk .desk-item { width: 52%; }
+  .daa-desk .desk-mood { z-index: 2; }
+  .daa-desk .desk-sketch { z-index: 1; left: 42%; top: 46%; right: auto; bottom: auto; }
 }
 
 /* .lightbox img (below) sets position:fixed for the plain image-lightbox
