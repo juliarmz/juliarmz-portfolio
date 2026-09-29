@@ -612,3 +612,55 @@ document.addEventListener(
   },
   { passive: false }
 );
+
+// Dev helper: after manually dragging pieces in a .drag-stage collage
+// around, this reads each piece's ACTUAL current position (its base
+// --x/--y plus whatever pixel offset dragging has applied) and copies
+// the exact --x/--y values to the clipboard, so the layout can be
+// baked into the HTML with no guessing from screenshots.
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".layout-export-btn");
+  if (!btn) return;
+  const stage = btn.closest(".hero-stage")?.querySelector(".drag-stage") || document.querySelector(".drag-stage");
+  if (!stage) return;
+  const stageStyle = getComputedStyle(stage);
+  const cw = parseFloat(stageStyle.getPropertyValue("--cw"));
+  const scale = cw / stage.getBoundingClientRect().width;
+  const lines = [...stage.querySelectorAll(".drag")].map((el) => {
+    const elStyle = getComputedStyle(el);
+    const baseX = parseFloat(elStyle.getPropertyValue("--x")) || 0;
+    const baseY = parseFloat(elStyle.getPropertyValue("--y")) || 0;
+    const dx = Number(el.dataset.dx || 0);
+    const dy = Number(el.dataset.dy || 0);
+    const x = Math.round(baseX + dx * scale);
+    const y = Math.round(baseY + dy * scale);
+    const name = el.getAttribute("src").split("/").pop();
+    return `${name}: --x:${x}; --y:${y};`;
+  });
+  const text = lines.join("\n");
+  const showCopied = () => {
+    const original = btn.textContent;
+    btn.textContent = "Copied! Paste it in chat";
+    setTimeout(() => {
+      btn.textContent = original;
+    }, 2000);
+  };
+  const showFallback = () => {
+    let box = btn.nextElementSibling;
+    if (!box || !box.classList.contains("layout-export-output")) {
+      box = document.createElement("textarea");
+      box.className = "layout-export-output";
+      box.readOnly = true;
+      btn.insertAdjacentElement("afterend", box);
+    }
+    box.value = text;
+    box.style.display = "block";
+    box.focus();
+    box.select();
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showCopied).catch(showFallback);
+  } else {
+    showFallback();
+  }
+});
