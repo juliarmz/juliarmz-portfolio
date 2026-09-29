@@ -383,6 +383,11 @@ document.addEventListener("click", (e) => {
     openLightbox(active);
     return;
   }
+  const bcjFloat = e.target.closest(".bcj-collage .float");
+  if (bcjFloat && bcjFloat.tagName === "IMG") {
+    openLightbox(bcjFloat);
+    return;
+  }
   const frame = e.target.closest(".figma-frame");
   if (frame) openFrameLightbox(frame.closest(".figma-canvas"));
 });

@@ -340,7 +340,11 @@ nav.projects .nav-bottom {
      Scoped above the mobile breakpoint where the caption wraps to a
      centered multi-line paragraph instead of one offset line. */
   .hero-row.featured .project-desc {
-    transform: translateX(-22px);
+    /* the needed shift is a fixed fraction of the image's rendered
+       width, and that width tracks the hero-stage's height (itself
+       100vh-driven), so the offset must scale with vh too or it falls
+       short on taller viewports instead of staying proportional */
+    transform: translateX(calc(6.26px - 3.13vh));
   }
 }
 
@@ -899,26 +903,29 @@ nav.projects .nav-bottom {
   .figma-frame > .mood-cap { left: 52%; font-size: 9px; }
 }
 
-/* DJs Against Apartheid: Moodboard and Sketchpad side by side, filling
-   the panel width, instead of the shared desk's overlapping corners */
+/* DJs Against Apartheid: Moodboard and Sketchpad slightly overlapping
+   and staggered, big enough to fill the panel width. Sketchpad sits on
+   top (z-index) and is offset down/right so neither frame's content is
+   hidden behind the other. */
 @media (min-width: 1101px) {
   .daa-desk {
-    display: flex;
-    align-items: flex-start;
-    gap: 40px;
     width: 100%;
-    aspect-ratio: auto;
+    aspect-ratio: 1.45 / 1;
   }
   .daa-desk .desk-item {
-    position: relative;
-    flex: 1 1 0;
-    width: auto;
-    min-width: 0;
+    width: 56%;
+  }
+  .daa-desk .desk-mood {
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+  .daa-desk .desk-sketch {
     left: auto;
-    top: auto;
-    right: auto;
+    right: 0;
+    top: 32%;
     bottom: auto;
-    z-index: auto;
+    z-index: 2;
   }
 }
 
