@@ -538,9 +538,13 @@ nav.projects .nav-bottom {
 .hero-row.single .hero-stage { height: auto; }
 
 /* every collage piece is now a clean transparent PNG with no shadow of
-   its own baked in, so give them all the same soft offset shadow */
+   its own baked in, so give them all the same soft offset shadow. A
+   fixed px shadow reads heavier on the smaller pieces and lighter on
+   the bigger ones since it doesn't scale with the element -- tying it
+   to each image's own --w keeps the shadow-to-size ratio consistent
+   across all 8 pieces regardless of their individual size */
 .bcj-collage .float {
-  box-shadow: 8px 14px 26px rgba(0, 0, 0, 0.16);
+  box-shadow: calc(var(--w) * 0.018px) calc(var(--w) * 0.032px) calc(var(--w) * 0.058px) rgba(0, 0, 0, 0.16);
 }
 
 /* loose collage whose pieces can be dragged around */
