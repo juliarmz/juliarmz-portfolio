@@ -537,6 +537,19 @@ nav.projects .nav-bottom {
 .hero-row.single .project-desc { white-space: normal; max-width: min(100%, 720px); }
 .hero-row.single .hero-stage { height: auto; }
 
+/* Brinn and CJ's flat-lay collage: center the whole block vertically in
+   the panel, same convention as the pair/trio hero rows */
+.hero-first .hero-row.single {
+  min-height: max(calc(100vh - 260px), 420px);
+  justify-content: center;
+}
+
+/* every collage piece is now a clean transparent PNG with no shadow of
+   its own baked in, so give them all the same small offset shadow */
+.bcj-collage .float {
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.18);
+}
+
 /* loose collage whose pieces can be dragged around */
 .hero-stage .drag-stage {
   width: min(100%, calc(max(100vh - 212px, 260px) * var(--cw) / var(--ch)));
