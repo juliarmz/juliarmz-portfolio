@@ -325,12 +325,13 @@ nav.projects .nav-bottom {
 .hero-row.featured .hero-stage {
   height: max(calc(100vh - 200px), 340px);
 }
-/* deliberately narrower than the image below it: at nearly-equal
-   widths, tiny sub-pixel differences between a ragged text line and a
-   hard image edge read as "not aligned" even though both share the
-   same center axis */
+/* this caption's text (with the embedded link) is wider than the base
+   560px cap; white-space:nowrap makes it overflow that box entirely
+   to one side rather than wrapping or centering the overflow, which
+   throws off the caption's visual center relative to the image below
+   it. Let it size to its natural content width instead. */
 .hero-row.featured .project-desc {
-  max-width: 420px;
+  max-width: none;
 }
 @media (min-width: 901px) {
   .content-spacer-top + .project-main.hero-first { margin-top: 0; }
