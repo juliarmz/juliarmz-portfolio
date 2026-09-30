@@ -537,13 +537,6 @@ nav.projects .nav-bottom {
 .hero-row.single .project-desc { white-space: normal; max-width: min(100%, 720px); }
 .hero-row.single .hero-stage { height: auto; }
 
-/* Brinn and CJ's flat-lay collage: center the whole block vertically in
-   the panel, same convention as the pair/trio hero rows */
-.hero-first .hero-row.single {
-  min-height: max(calc(100vh - 260px), 420px);
-  justify-content: center;
-}
-
 /* every collage piece is now a clean transparent PNG with no shadow of
    its own baked in, so give them all the same soft offset shadow */
 .bcj-collage .float {
@@ -591,10 +584,6 @@ nav.projects .nav-bottom {
 .hero-row.pair,
 .hero-row.trio {
   gap: 48px;
-}
-.hero-first .hero-row.pair {
-  min-height: max(calc(100vh - 260px), 420px);
-  justify-content: center;
 }
 .hero-row.pair .hero-stage,
 .hero-row.trio .hero-stage {
@@ -900,20 +889,20 @@ nav.projects .nav-bottom {
 @media (min-width: 1101px) {
   .daa-desk {
     width: 100%;
-    aspect-ratio: 1.45 / 1;
+    aspect-ratio: 1.3 / 1;
   }
   .daa-desk .desk-item {
-    width: 56%;
+    width: 64%;
   }
   .daa-desk .desk-mood {
-    left: 0;
+    left: 6%;
     top: 0;
     z-index: 1;
   }
   .daa-desk .desk-sketch {
     left: auto;
     right: 0;
-    top: 32%;
+    top: 30%;
     bottom: auto;
     z-index: 2;
   }
