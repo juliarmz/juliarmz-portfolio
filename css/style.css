@@ -353,6 +353,19 @@ nav.projects .nav-bottom {
   margin-top: 3vh;
 }
 
+/* plain "behind the design" reference images: no figma-frame chrome,
+   just sized up to fill the panel nicely, with a plain label above
+   aligned to the image's own left edge */
+.bcj-behind-wrap {
+  width: 96%;
+  margin-inline: auto;
+  text-align: left;
+}
+.bcj-behind-img {
+  display: block;
+  width: 100%;
+}
+
 /* breaks out of project-main's 1200px cap to span the full content
    area, same width as the sketchbook masonry gallery */
 .project-section.pride-panel {
