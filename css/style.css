@@ -345,6 +345,13 @@ nav.projects .nav-bottom {
   margin-top: 18vh;
 }
 
+/* the flat-lay collage above this panel is shorter than a typical
+   hero image, so the standard 8vh gap reads as too much empty space
+   underneath it */
+.project-section.bcj-moodboard-panel {
+  margin-top: 3vh;
+}
+
 /* breaks out of project-main's 1200px cap to span the full content
    area, same width as the sketchbook masonry gallery */
 .project-section.pride-panel {
