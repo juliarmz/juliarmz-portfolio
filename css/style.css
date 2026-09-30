@@ -545,9 +545,9 @@ nav.projects .nav-bottom {
 }
 
 /* every collage piece is now a clean transparent PNG with no shadow of
-   its own baked in, so give them all the same small offset shadow */
+   its own baked in, so give them all the same soft offset shadow */
 .bcj-collage .float {
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 8px 14px 26px rgba(0, 0, 0, 0.16);
 }
 
 /* loose collage whose pieces can be dragged around */
