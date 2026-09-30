@@ -543,6 +543,7 @@ nav.projects .nav-bottom {
 /* single hero (no carousel); longer copy wraps onto two lines */
 .hero-row.single .project-desc { white-space: normal; max-width: min(100%, 720px); }
 .hero-row.single .hero-stage { height: auto; }
+.hero-row.single { gap: 44px; }
 
 /* loose collage whose pieces can be dragged around */
 .hero-stage .drag-stage {
