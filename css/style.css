@@ -367,16 +367,23 @@ nav.projects .nav-bottom {
   cursor: zoom-in;
 }
 
-/* bigger than the other two "behind the design" panels, and pushed to
-   the right instead of centered. The fixed-px nudge (not just a bigger
-   percentage) is deliberate: .project-section's right edge already sits
-   exactly far enough from the decorative border for the 96%-centered
-   siblings, and that clearance is a fixed number of px regardless of
-   viewport width, so a percentage-only overflow would grow with a wide
-   viewport and risk running under the border. */
+/* bigger than the default .bcj-behind-wrap, filling its panel the way
+   the Save the dates image (taller aspect ratio) already reads as
+   bigger. Centered overflow via equal negative inline margins, in fixed
+   px rather than a percentage: the clearance before the decorative
+   border is a fixed number of px regardless of viewport width, so a
+   percentage-only overflow would grow on a wide viewport and risk
+   running under the border. */
+.bcj-panel-fill {
+  width: calc(100% + 40px);
+  margin-inline: -20px;
+}
+
+/* even bigger than .bcj-panel-fill, and pushed to the right instead of
+   centered, by weighting the overflow onto the right side only. */
 .bcj-rsvp-wrap {
-  width: calc(98% + 16px);
-  margin-left: calc(2% + 16px);
+  width: calc(100% + 40px);
+  margin-left: 0;
 }
 
 /* plain-copy panel titles (Moodboard, Save the dates, etc.) instead of
