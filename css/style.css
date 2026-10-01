@@ -367,6 +367,18 @@ nav.projects .nav-bottom {
   cursor: zoom-in;
 }
 
+/* bigger than the other two "behind the design" panels, and pushed to
+   the right instead of centered. The fixed-px nudge (not just a bigger
+   percentage) is deliberate: .project-section's right edge already sits
+   exactly far enough from the decorative border for the 96%-centered
+   siblings, and that clearance is a fixed number of px regardless of
+   viewport width, so a percentage-only overflow would grow with a wide
+   viewport and risk running under the border. */
+.bcj-rsvp-wrap {
+  width: calc(98% + 16px);
+  margin-left: calc(2% + 16px);
+}
+
 /* plain-copy panel titles (Moodboard, Save the dates, etc.) instead of
    the boxed figma-label lockup used elsewhere; .project-desc's own
    type styling is scoped to .project-main, which these panels sit
