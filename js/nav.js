@@ -163,8 +163,11 @@ function openLightbox(active) {
   setRect(img, active.getBoundingClientRect());
   box.appendChild(img);
   const bcjCollage = active.closest(".bcj-collage");
+  const bcjBehind = active.classList.contains("bcj-behind-img");
   const multiple = bcjCollage
     ? bcjCollage.querySelectorAll(".float").length > 1
+    : bcjBehind
+    ? document.querySelectorAll(".bcj-behind-img").length > 1
     : active.closest(".hero-row").querySelectorAll(".stage-img").length > 1;
   addChrome(box, multiple);
   document.body.appendChild(box);
@@ -337,6 +340,13 @@ function stepDesign(step) {
     showLightboxImage(imgs[(current + step + imgs.length) % imgs.length]);
     return;
   }
+  const bcjBehind = lightbox && !lightbox.closing && lightbox.active.classList.contains("bcj-behind-img");
+  if (bcjBehind) {
+    const imgs = [...document.querySelectorAll(".bcj-behind-img")];
+    const current = imgs.indexOf(lightbox.active);
+    showLightboxImage(imgs[(current + step + imgs.length) % imgs.length]);
+    return;
+  }
   const row = lightbox && !lightbox.closing ? lightbox.active.closest(".hero-row") : visibleCarousel();
   if (!row) return;
   const imgs = [...row.querySelectorAll(".stage-img")];
@@ -397,6 +407,11 @@ document.addEventListener("click", (e) => {
   const bcjFloat = e.target.closest(".bcj-collage .float");
   if (bcjFloat && bcjFloat.tagName === "IMG") {
     openLightbox(bcjFloat);
+    return;
+  }
+  const bcjBehind = e.target.closest(".bcj-behind-img");
+  if (bcjBehind) {
+    openLightbox(bcjBehind);
     return;
   }
   const frame = e.target.closest(".figma-frame");
