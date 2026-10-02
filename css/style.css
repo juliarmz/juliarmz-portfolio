@@ -238,6 +238,12 @@ nav.projects .nav-bottom {
 
 .bio-col a {
   color: var(--ink);
+  text-decoration: none;
+}
+
+.bio-col a:hover {
+  color: var(--red);
+  text-decoration: underline;
 }
 
 /* ---------- project page content ---------- */
