@@ -445,6 +445,7 @@ nav.projects .nav-bottom {
   display: block;
   margin-bottom: 24px;
   break-inside: avoid;
+  cursor: zoom-in;
 }
 
 /* ---------- responsive ---------- */

@@ -164,10 +164,13 @@ function openLightbox(active) {
   box.appendChild(img);
   const bcjCollage = active.closest(".bcj-collage");
   const bcjBehind = active.classList.contains("bcj-behind-img");
+  const masonry = active.closest(".masonry-gallery");
   const multiple = bcjCollage
     ? bcjCollage.querySelectorAll(".float").length > 1
     : bcjBehind
     ? document.querySelectorAll(".bcj-behind-img").length > 1
+    : masonry
+    ? masonry.querySelectorAll(".plate").length > 1
     : active.closest(".hero-row").querySelectorAll(".stage-img").length > 1;
   addChrome(box, multiple);
   document.body.appendChild(box);
@@ -347,6 +350,13 @@ function stepDesign(step) {
     showLightboxImage(imgs[(current + step + imgs.length) % imgs.length]);
     return;
   }
+  const masonry = lightbox && !lightbox.closing ? lightbox.active.closest(".masonry-gallery") : null;
+  if (masonry) {
+    const imgs = [...masonry.querySelectorAll(".plate")];
+    const current = imgs.indexOf(lightbox.active);
+    showLightboxImage(imgs[(current + step + imgs.length) % imgs.length]);
+    return;
+  }
   const row = lightbox && !lightbox.closing ? lightbox.active.closest(".hero-row") : visibleCarousel();
   if (!row) return;
   const imgs = [...row.querySelectorAll(".stage-img")];
@@ -412,6 +422,11 @@ document.addEventListener("click", (e) => {
   const bcjBehind = e.target.closest(".bcj-behind-img");
   if (bcjBehind) {
     openLightbox(bcjBehind);
+    return;
+  }
+  const plate = e.target.closest(".masonry-gallery .plate");
+  if (plate) {
+    openLightbox(plate);
     return;
   }
   const frame = e.target.closest(".figma-frame");
