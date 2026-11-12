@@ -57,7 +57,7 @@ html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   text-transform: lowercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.03em;
 }
 
 /* Fixed decorative border — always exactly fills the viewport, never scrolls
@@ -95,8 +95,8 @@ html, body {
 
 .site-name {
   font-weight: 400;
-  font-size: 13px;
-  letter-spacing: 0.1em;
+  font-size: 20px;
+  letter-spacing: 0.04em;
   text-decoration: none;
   color: var(--ink);
   display: inline-block;
@@ -210,7 +210,7 @@ nav.projects .nav-bottom {
 }
 
 .bio-col {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.8;
   flex: none;
@@ -226,7 +226,7 @@ nav.projects .nav-bottom {
 }
 
 .bio-col h2 {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   margin: 0 0 8px;
   text-transform: none;
@@ -272,7 +272,7 @@ nav.projects .nav-bottom {
 }
 
 .project-main .project-desc {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   max-width: 560px;
   line-height: 1.6;
@@ -399,7 +399,7 @@ nav.projects .nav-bottom {
    type styling is scoped to .project-main, which these panels sit
    outside of, so restate it here */
 .bcj-panel-title {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
   margin: 0 0 14px;
@@ -472,7 +472,7 @@ nav.projects .nav-bottom {
 
   .content-spacer-top { height: 0; }
 
-  .site-name { font-size: 13px; margin-bottom: 20px; }
+  .site-name { font-size: 16px; margin-bottom: 20px; }
   nav.projects { gap: 14px; }
   nav.projects .nav-top { gap: 10px; }
   nav.projects .nav-bottom { gap: 10px; margin-top: 0; }
@@ -529,7 +529,7 @@ nav.projects .nav-bottom {
 
 .collage .cap {
   color: var(--red);
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .collage .cap.r {
@@ -689,7 +689,7 @@ nav.projects .nav-bottom {
 .hero-row.pair .pair-caption,
 .hero-row.trio .trio-caption {
   margin: 0;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--red);
 }
 .hero-row.pair .pair-caption a,
@@ -736,7 +736,7 @@ nav.projects .nav-bottom {
   background: #fff;
   border: 1px solid #e2e2e2;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1;
   padding: 8px 12px;
@@ -776,7 +776,7 @@ nav.projects .nav-bottom {
   margin: 0;
   color: var(--red);
   font-weight: 400;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
 }
 
