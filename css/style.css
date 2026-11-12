@@ -54,8 +54,10 @@ html, body {
   overflow: hidden;
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
 }
 
 /* Fixed decorative border — always exactly fills the viewport, never scrolls
@@ -92,9 +94,9 @@ html, body {
 }
 
 .site-name {
-  font-weight: 800;
-  font-size: 28px;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: var(--ink);
   display: inline-block;
@@ -126,8 +128,8 @@ nav.projects .nav-bottom {
   gap: 10px;
   text-decoration: none;
   color: var(--ink);
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 11px;
   line-height: 1.3;
 }
 
@@ -208,9 +210,9 @@ nav.projects .nav-bottom {
 }
 
 .bio-col {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.8;
   flex: none;
   width: 510px;
   max-width: 100%;
@@ -224,7 +226,7 @@ nav.projects .nav-bottom {
 }
 
 .bio-col h2 {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 400;
   margin: 0 0 8px;
   text-transform: none;
@@ -270,10 +272,10 @@ nav.projects .nav-bottom {
 }
 
 .project-main .project-desc {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 400;
   max-width: 560px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .project-main .project-desc a {
@@ -397,7 +399,7 @@ nav.projects .nav-bottom {
    type styling is scoped to .project-main, which these panels sit
    outside of, so restate it here */
 .bcj-panel-title {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 400;
   line-height: 1.5;
   margin: 0 0 14px;
@@ -470,7 +472,7 @@ nav.projects .nav-bottom {
 
   .content-spacer-top { height: 0; }
 
-  .site-name { font-size: 24px; margin-bottom: 20px; }
+  .site-name { font-size: 13px; margin-bottom: 20px; }
   nav.projects { gap: 14px; }
   nav.projects .nav-top { gap: 10px; }
   nav.projects .nav-bottom { gap: 10px; margin-top: 0; }
@@ -527,7 +529,7 @@ nav.projects .nav-bottom {
 
 .collage .cap {
   color: var(--red);
-  font-size: 14px;
+  font-size: 11px;
 }
 
 .collage .cap.r {
@@ -687,7 +689,7 @@ nav.projects .nav-bottom {
 .hero-row.pair .pair-caption,
 .hero-row.trio .trio-caption {
   margin: 0;
-  font-size: 14px;
+  font-size: 11px;
   color: var(--red);
 }
 .hero-row.pair .pair-caption a,
@@ -734,7 +736,7 @@ nav.projects .nav-bottom {
   background: #fff;
   border: 1px solid #e2e2e2;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 400;
   line-height: 1;
   padding: 8px 12px;
@@ -773,8 +775,8 @@ nav.projects .nav-bottom {
   top: 92%;
   margin: 0;
   color: var(--red);
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 11px;
   white-space: nowrap;
 }
 
@@ -857,6 +859,7 @@ nav.projects .nav-bottom {
   opacity: 0.55;
 }
 
+.lightbox-arrow { letter-spacing: 0; }
 .lightbox-arrow:hover { opacity: 1; }
 .lightbox-arrow.prev { left: 12px; }
 .lightbox-arrow.next { right: 12px; }
